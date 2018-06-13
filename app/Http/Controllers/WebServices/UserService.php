@@ -8,14 +8,10 @@ Use App\User;
 class UserService extends WebService
 {
     public function index(){
-    	echo 'User Service Called';
+    	return User::all();
     }
 
-	public function get_user(){
-	    return User::all();
-	}
-
-	public function print(){
-		echo "Print";
-	}
+    public function show($id){
+        return $this->createSuccessMessage(User::find($id));
+    }
 }

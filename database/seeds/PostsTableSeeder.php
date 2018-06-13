@@ -22,7 +22,9 @@ class PostsTableSeeder extends Seeder
             Post::create([
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
-                'post_date' => $faker->date,
+                'posted_by' => $faker->numberBetween(1, 11),
+                'schedule_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
+                // 'is_completed' => $faker->boolean,
             ]);
         }
     }

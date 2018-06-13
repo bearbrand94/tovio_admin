@@ -17,7 +17,9 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('content');
-            $table->date('post_date')->useCurrent();
+            $table->integer('posted_by');
+            $table->datetime('schedule_date');
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }

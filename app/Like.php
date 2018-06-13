@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Like extends Model
 {
-    protected $fillable = ['title', 'content', 'posted_by', 'schedule_date', 'is_completed'];
+    protected $fillable = ['user_id', 'table_name', 'reference_id'];
     protected $hidden = [
         'created_at', 'updated_at',
     ];

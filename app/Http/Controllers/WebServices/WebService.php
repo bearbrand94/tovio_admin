@@ -11,8 +11,23 @@ class WebService extends BaseController
     	echo 'Web Service Called';
     }
 
-	public function show($name)
-	{
+	public function show($name){
 	    return view('hello',array('name' => $name));
+	}
+
+	public function createErrorMessage($message, $errorCode){
+		$result = [ "payload"=>'',
+				    "error_msg"=>$message,
+					"code"=>$errorCode
+					];
+		return response()->json($result, $errorCode);
+	}
+
+	public function createSuccessMessage($payload){
+		$result = [ "payload"=>$payload,
+				    "error_msg"=>'',
+					"code"=>200
+					];
+		return response()->json($result);
 	}
 }
