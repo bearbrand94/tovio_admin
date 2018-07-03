@@ -17,6 +17,7 @@ return [
     */
 
     'driver' => env('SESSION_DRIVER', 'file'),
+    // 'driver' => 'file',
 
     /*
     |--------------------------------------------------------------------------
@@ -126,7 +127,8 @@ return [
         'SESSION_COOKIE',
         str_slug(env('APP_NAME', 'laravel'), '_').'_session'
     ),
-
+    // 'cookie' => 'myapp_session',
+    
     /*
     |--------------------------------------------------------------------------
     | Session Cookie Path

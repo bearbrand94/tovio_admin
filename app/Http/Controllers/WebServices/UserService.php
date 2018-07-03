@@ -5,9 +5,11 @@ namespace App\Http\Controllers\WebServices;
 use Illuminate\Http\Request;
 Use App\User;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use AWS;
+use Session;
 
 class UserService extends WebService
 {
@@ -22,8 +24,8 @@ class UserService extends WebService
 
         if (Auth::attempt(array('username' => $username, 'password' => $password),true))
         {
-            $user = Auth::user();
-
+        	$user = [];
+            $user['data_auth'] = Auth::user();
             return $this->createSuccessMessage($user);
         }
         return $this->createErrorMessage('Username atau password anda salah', 400);
@@ -140,6 +142,7 @@ class UserService extends WebService
         $keyword = $request->keyword ? $request->keyword : null;
         $key_sort = $request->key_sort ? $request->key_sort : 'first_name';
         $sort_type = $request->sort_type ? $request->sort_type : 'asc';
+        $user = User::getUser($page-1, $show, $keyword, $sort_type, $key_sort);
         return $this->createSuccessMessage($user);
 	}
 
@@ -158,8 +161,6 @@ class UserService extends WebService
 
     public function initialData(Request $request){
     	$data = [];
-
-    	// $data['country'] = Country::orderBy('name','asc')->get();
 
     	if (Auth::user()) {
             $data['user'] = Auth::user();

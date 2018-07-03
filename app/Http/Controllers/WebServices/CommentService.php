@@ -20,26 +20,40 @@ class CommentService extends WebService
         return $this->createSuccessMessage(Comment::find($id));
     }
 
-    public function get_post_comment(Request $request, $post_id){
+    public function get_comment(Request $request){
+        $comment['comment'] = Comment::find($request->comment_id);
+        $comment['like_count'] = Like::where('reference_id', $request->comment_id)->where('table_name', 'comments')->count();
+         $comment['liked_by_me'] = Like::where('reference_id', $request->comment_id)->where('user_id', $request->user_id)->where('table_name', 'comments')->count();       
+        return $this->createSuccessMessage($comment);
+    }
+
+    public function get_post_comment(Request $request){
         // return $request->user_id;
         // $post = Post::all();
+        $post_id = $request->post_id;
 
         $post['post_data'] = Post::where('id', $post_id)->get();
-        $post['post_data'][0]['like_count'] = Like::where('reference_id', $post['post_data'][0]['id'])->where('table_name', 'posts')->count();
+        if(count($post['post_data'])>0){
+            $post['post_data'][0]['like_count'] = Like::where('reference_id', $post['post_data'][0]['id'])->where('table_name', 'posts')->count();
 
-        $post['comment_count'] = Comment::where('post_id', $post_id)->count();
-        $post['comment'] = Comment::where('post_id', $post_id)->get();
+            $post['comment_count'] = Comment::where('post_id', $post_id)->count();
+            $post['comment'] = Comment::where('post_id', $post_id)->get();
 
-        for ($i=0; $i < count($post['comment']); $i++) { 
-            $post['comment'][$i]['like_count'] = Like::where('reference_id', $post['comment'][$i]['id'])->where('table_name', 'comments')->count();
+            for ($i=0; $i < count($post['comment']); $i++) { 
+                $post['comment'][$i]['like_count'] = Like::where('reference_id', $post['comment'][$i]['id'])->where('table_name', 'comments')->count();
+                $post['comment'][$i]['liked_by_me'] = Like::where('reference_id', $post['comment'][$i]['id'])->where('user_id', $request->user_id)->where('table_name', 'comments')->count();  
+            }
+        }
+        else{
+            $post = "Post Not Available";
         }
         return $this->createSuccessMessage($post);
     }
 
-    public function store(Request $request, $post_id)
+    public function store(Request $request)
     {
         // 'post_id', 'content', 'commented_by', 'comment_date'
-        $post_id = $post_id;
+        $post_id = $request->post_id;
         $content = $request->content;
         $commented_by = $request->commented_by;
         $comment_date = $request->comment_date;
@@ -58,18 +72,23 @@ class CommentService extends WebService
         // return response()->json($post, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $comment = Comment::findOrFail($id);
+        $comment = Comment::findOrFail($request->comment_id);
         $comment->update($request->all());
 
         return $this->createSuccessMessage($comment);
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request)
     {
-        $comment = Comment::findOrFail($id);
-        $comment->delete();
+        $comment = Comment::findOrFail($request->comment_id);
+        if($comment != null){
+            $comment->delete();
+        }
+        else{
+            $comment = "Not Found";
+        }
 
         return $this->createSuccessMessage($comment);
     }

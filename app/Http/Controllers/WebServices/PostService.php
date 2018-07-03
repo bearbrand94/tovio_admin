@@ -20,6 +20,14 @@ class PostService extends WebService
         return $this->createSuccessMessage(Post::find($id));
     }
 
+    public function get_post(Request $request){
+        $post = Post::find($request->post_id);
+        $post['comment_count'] = Comment::where('post_id', $post->id)->count();
+        $post['like_count'] = Like::where('reference_id', $post->id)->where('table_name', 'posts')->count();
+        $post['liked_by_me'] = Like::where('reference_id', $post->id)->where('user_id', $request->user_id)->where('table_name', 'posts')->count();
+        return $this->createSuccessMessage($post);
+    }
+
     public function get_user_post(Request $request){
         // return $request->user_id;
         $post = Post::where('posted_by', $request->user_id);
@@ -36,6 +44,7 @@ class PostService extends WebService
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]['comment_count'] = Comment::where('post_id', $post[$i]->id)->count();
             $post[$i]['like_count'] = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
+            $post[$i]['liked_by_me'] = Like::where('reference_id', $post[$i]->id)->where('user_id', $request->user_id)->where('table_name', 'posts')->count();
         }
 
         return $this->createSuccessMessage($post);
@@ -61,19 +70,23 @@ class PostService extends WebService
         // return response()->json($post, 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::find($request->post_id);
         $post->update($request->all());
 
         return $this->createSuccessMessage($post);
     }
 
-    public function delete(Request $request, $id)
+    public function delete(Request $request)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
-
+        $post = Post::find($request->post_id);
+        if($post != null){
+            $post->delete();
+        }
+        else{
+            $post = "Not Found";
+        }
         return $this->createSuccessMessage($post);
     }
 }

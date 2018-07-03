@@ -4,7 +4,8 @@ namespace App\Http\Controllers\WebServices;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
 use Response;
 use Mail;
 use Validator;

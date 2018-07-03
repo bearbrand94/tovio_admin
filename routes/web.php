@@ -43,3 +43,21 @@ Route::get('/logout','Front@logout');
 Route::get('/cart','Front@cart');
 Route::get('/checkout','Front@checkout');
 Route::get('/search/{query}','Front@search');
+
+//user service
+// Route::get('user', 'WebServices\UserService@index');
+// Route::get('user/{post}', 'WebServices\UserService@show');
+
+// Route::post('user/test','WebServices\UserService@testUser');
+// Route::post('user/sign_up','WebServices\UserService@signUp');
+// Route::post('user/sign_in','WebServices\UserService@signIn');
+// Route::post('user/edit_user_profile','WebServices\UserService@editUserProfile');
+// Route::post('user/get_user','WebServices\UserService@getUser');
+// Route::post('user/sign_out','WebServices\UserService@signOut');
+// // Route::post('/set_lbod','WebServices\UserService@setLBOD');
+
+// // initial data
+// Route::post('initial_data','WebServices\UserService@initialData');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

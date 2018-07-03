@@ -23,23 +23,23 @@ Route::get('/test', function () {
 Route::get('/get_user','WebServices\UserService@get_user');
 
 //post service
-Route::get('post', 'WebServices\PostService@index');
-Route::get('post/{post}', 'WebServices\PostService@show');
-Route::post('user_post', 'WebServices\PostService@get_user_post');
-Route::post('post', 'WebServices\PostService@store');
-Route::put('post/{post}', 'WebServices\PostService@update');
-Route::delete('post/{post}', 'WebServices\PostService@delete');
+// Route::get('post', 'WebServices\PostService@index');
+Route::post('post/get', 'WebServices\PostService@get_post');
+Route::post('post/user_post', 'WebServices\PostService@get_user_post');
+Route::post('post/add', 'WebServices\PostService@store');
+Route::post('post/edit', 'WebServices\PostService@update');
+Route::post('post/delete', 'WebServices\PostService@delete');
 
 //comment service
-Route::get('post/{post}/comment', 'WebServices\CommentService@get_post_comment');
-Route::post('post/{post}/comment', 'WebServices\CommentService@store');
-Route::put('comment/{post}', 'WebServices\CommentService@update');
-Route::delete('comment/{post}', 'WebServices\CommentService@delete');
+Route::post('comment/get', 'WebServices\CommentService@get_comment');
+Route::post('comment/post_comment', 'WebServices\CommentService@get_post_comment');
+Route::post('comment/add', 'WebServices\CommentService@store');
+Route::post('comment/edit', 'WebServices\CommentService@update');
+Route::post('comment/delete', 'WebServices\CommentService@delete');
 
 //do like service
 Route::post('like', 'WebServices\LikeService@store');
-Route::put('like/{post}', 'WebServices\LikeService@update');
-Route::delete('like', 'WebServices\LikeService@delete');
+Route::post('unlike', 'WebServices\LikeService@delete');
 
 //user service
 // Route::get('user', 'WebServices\UserService@index');
@@ -51,7 +51,6 @@ Route::post('user/sign_in','WebServices\UserService@signIn');
 Route::post('user/edit_user_profile','WebServices\UserService@editUserProfile');
 Route::post('user/get_user','WebServices\UserService@getUser');
 Route::post('user/sign_out','WebServices\UserService@signOut');
-// Route::post('/set_lbod','WebServices\UserService@setLBOD');
 
 // initial data
-Route::post('initial_data','WebServices\UserService@initialData');
+Route::post('user/initial_data','WebServices\UserService@initialData');
