@@ -14,6 +14,7 @@ use AWS;
 use Config;
 use Image;
 use DateTime;
+use Session;
 
 use App\Models\Order;
 use Aws\S3\S3Client;

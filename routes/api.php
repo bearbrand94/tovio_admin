@@ -26,6 +26,7 @@ Route::get('/get_user','WebServices\UserService@get_user');
 // Route::get('post', 'WebServices\PostService@index');
 Route::post('post/get', 'WebServices\PostService@get_post');
 Route::post('post/user_post', 'WebServices\PostService@get_user_post');
+Route::post('post/my_post', 'WebServices\PostService@get_my_post');
 Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');
 Route::post('post/delete', 'WebServices\PostService@delete');
