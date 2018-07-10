@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WebServices;
 
 use Illuminate\Http\Request;
+Use App\User;
 Use App\Post;
 Use App\Comment;
 Use App\Like;
@@ -12,6 +13,7 @@ use Session;
 
 class PostService extends WebService
 {
+    public $page_show = 10;
     public function index()
     {
         return $this->createSuccessMessage(Post::all());
@@ -23,16 +25,15 @@ class PostService extends WebService
     }
 
     public function get_post(Request $request){
-        $post = Post::where('post_id', $request->post_id);
-        $post['comment_count'] = Comment::where('post_id', $post->id)->count();
-        $post['like_count'] = Like::where('reference_id', $post->id)->where('table_name', 'posts')->count();
-        $post['liked_by_me'] = Like::where('reference_id', $post->id)->where('user_id', Auth::id())->where('table_name', 'posts')->count();
+        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
+        $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
+        $post = Post::get_post($date_start, $date_end);
         return $this->createSuccessMessage($post);
     }
 
-    public function get_user_post(Request $request){
+    public function get_network_post(Request $request){
         // return $request->user_id;
-        $post = Post::where('posted_by', $request->user_id);
+        $post = Post::where('posted_by', Auth::id());
         // $post = Post::all();
 
         if($request->date_start && $request->date_end){
@@ -41,7 +42,8 @@ class PostService extends WebService
             $post = $post->where('schedule_date', '>', $date_start);
             $post = $post->where('schedule_date', '<', $date_end);
         }
-        $post = $post->get();
+        $post = $post->paginate($this->page_show);
+        // $post = $post->get();
 
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]['comment_count'] = Comment::where('post_id', $post[$i]->id)->count();
@@ -53,24 +55,9 @@ class PostService extends WebService
     }
 
     public function get_my_post(Request $request){
-        // return $request->user_id;
-        $post = Post::where('posted_by', Auth::id());
-        // $post = Post::all();
-
-        if($request->date_start && $request->date_end){
-            $date_start = Date('Y-m-d h:i:s',strtotime($request->date_start));
-            $date_end = Date('Y-m-d h:i:s',strtotime($request->date_end));
-            $post = $post->where('schedule_date', '>', $date_start);
-            $post = $post->where('schedule_date', '<', $date_end);
-        }
-        $post = $post->get();
-
-        for ($i=0; $i < count($post); $i++) { 
-            $post[$i]['comment_count'] = Comment::where('post_id', $post[$i]->id)->count();
-            $post[$i]['like_count'] = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
-            $post[$i]['liked_by_me'] = Like::where('reference_id', $post[$i]->id)->where('user_id', Auth::id())->where('table_name', 'posts')->count();
-        }
-
+        $date_start = Date('Y-m-d h:i:s',strtotime($request->date_start));
+        $date_end = Date('Y-m-d h:i:s',strtotime($request->date_end));
+        $post = Post::get_post($date_start, $date_end)->where('user_id', Auth::id())->paginate($this->page_show);
         return $this->createSuccessMessage($post);
     }
 

@@ -24,16 +24,17 @@ Route::get('/get_user','WebServices\UserService@get_user');
 
 //post service
 // Route::get('post', 'WebServices\PostService@index');
+Route::get('post/get', 'WebServices\PostService@get_post');
 Route::post('post/get', 'WebServices\PostService@get_post');
-Route::post('post/user_post', 'WebServices\PostService@get_user_post');
+Route::post('post/network_post', 'WebServices\PostService@get_network_post');
 Route::post('post/my_post', 'WebServices\PostService@get_my_post');
 Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');
 Route::post('post/delete', 'WebServices\PostService@delete');
 
 //comment service
-Route::post('comment/get', 'WebServices\CommentService@get_comment');
-Route::post('comment/post_comment', 'WebServices\CommentService@get_post_comment');
+Route::get('comment/get', 'WebServices\CommentService@get_comment');
+Route::get('comment/post_comment', 'WebServices\CommentService@get_post_comment');
 Route::post('comment/add', 'WebServices\CommentService@store');
 Route::post('comment/edit', 'WebServices\CommentService@update');
 Route::post('comment/delete', 'WebServices\CommentService@delete');

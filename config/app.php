@@ -158,7 +158,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        // Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
+        // Searchy Class
+        'Searchy' => TomLingham\Searchy\SearchyServiceProvider::class,
 
     ],
 
