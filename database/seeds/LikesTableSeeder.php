@@ -18,7 +18,7 @@ class LikesTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         // create relation of like post
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 1500; $i++) {
             Like::create([
                 'user_id' => $faker->numberBetween(1, 10),
                 'table_name' => 'posts',
@@ -27,7 +27,7 @@ class LikesTableSeeder extends Seeder
         }
 
         // create relation of like comment
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 500; $i++) {
             Like::create([
                 'user_id' => $faker->numberBetween(1, 10),
                 'table_name' => 'comments',

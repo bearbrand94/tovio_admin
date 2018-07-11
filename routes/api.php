@@ -25,9 +25,8 @@ Route::get('/get_user','WebServices\UserService@get_user');
 //post service
 // Route::get('post', 'WebServices\PostService@index');
 Route::get('post/get', 'WebServices\PostService@get_post');
-Route::post('post/get', 'WebServices\PostService@get_post');
-Route::post('post/network_post', 'WebServices\PostService@get_network_post');
-Route::post('post/my_post', 'WebServices\PostService@get_my_post');
+Route::get('post/network_post', 'WebServices\PostService@get_network_post');
+Route::get('post/my_post', 'WebServices\PostService@get_my_post');
 Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');
 Route::post('post/delete', 'WebServices\PostService@delete');
@@ -43,10 +42,12 @@ Route::post('comment/delete', 'WebServices\CommentService@delete');
 Route::post('like', 'WebServices\LikeService@store');
 Route::post('unlike', 'WebServices\LikeService@delete');
 
-//user service
-// Route::get('user', 'WebServices\UserService@index');
-// Route::get('user/{post}', 'WebServices\UserService@show');
+//do follow service
+Route::get('follow/test', 'WebServices\FollowService@index');
+Route::post('follow', 'WebServices\FollowService@store');
+Route::post('unfollow', 'WebServices\FollowService@delete');
 
+//user service
 Route::post('user/test','WebServices\UserService@testUser');
 Route::post('user/sign_up','WebServices\UserService@signUp');
 Route::post('user/sign_in','WebServices\UserService@signIn');

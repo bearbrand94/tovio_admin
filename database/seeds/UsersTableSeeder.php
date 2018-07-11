@@ -36,10 +36,10 @@ class UsersTableSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             User::create([
                 'email' => $faker->email,
-                'username' => $faker->name,
+                'username' => $faker->userName,
                 'password' => $password,
-                'first_name' => $faker->name,
-                'last_name' => $faker->name,
+                'first_name' => $faker->firstName,
+                'last_name' => $faker->lastName,
                 'telephone' => $faker->phoneNumber,
                 'address' => $faker->address,
             ]);

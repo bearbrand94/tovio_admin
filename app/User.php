@@ -103,4 +103,15 @@ class User extends Authenticatable
         $output['count']=$count;
         return $output;
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(self::class, 'networks', 'following_id', 'follower_id')->withTimestamps();
+    }
+
+    // Get all users we are following
+    public function following()
+    {
+        return $this->belongsToMany(self::class, 'networks', 'follower_id', 'following_id')->withTimestamps();
+    }
 }

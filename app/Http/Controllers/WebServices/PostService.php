@@ -32,32 +32,25 @@ class PostService extends WebService
     }
 
     public function get_network_post(Request $request){
-        // return $request->user_id;
-        $post = Post::where('posted_by', Auth::id());
-        // $post = Post::all();
+        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
+        $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
 
-        if($request->date_start && $request->date_end){
-            $date_start = Date('Y-m-d h:i:s',strtotime($request->date_start));
-            $date_end = Date('Y-m-d h:i:s',strtotime($request->date_end));
-            $post = $post->where('schedule_date', '>', $date_start);
-            $post = $post->where('schedule_date', '<', $date_end);
-        }
-        $post = $post->paginate($this->page_show);
+        $post = Post::get_network_post($date_start, $date_end)->where('user_id', Auth::id());
         // $post = $post->get();
 
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]['comment_count'] = Comment::where('post_id', $post[$i]->id)->count();
             $post[$i]['like_count'] = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
-            $post[$i]['liked_by_me'] = Like::where('reference_id', $post[$i]->id)->where('user_id', $request->user_id)->where('table_name', 'posts')->count();
+            $post[$i]['liked_by_me'] = Like::where('reference_id', $post[$i]->id)->where('posted_by', $request->user_id)->where('table_name', 'posts')->count();
         }
 
         return $this->createSuccessMessage($post);
     }
 
     public function get_my_post(Request $request){
-        $date_start = Date('Y-m-d h:i:s',strtotime($request->date_start));
-        $date_end = Date('Y-m-d h:i:s',strtotime($request->date_end));
-        $post = Post::get_post($date_start, $date_end)->where('user_id', Auth::id())->paginate($this->page_show);
+        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
+        $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
+        $post = Post::get_my_post($date_start, $date_end);
         return $this->createSuccessMessage($post);
     }
 

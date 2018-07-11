@@ -7,6 +7,7 @@ Use App\Post;
 Use App\Comment;
 Use App\Like;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class LikeService extends WebService
 {
@@ -40,8 +41,13 @@ class LikeService extends WebService
         $table_name = $request->table_name;
         $reference_id = $request->reference_id;
 
-        $like = Like::where('user_id', $user_id)->where('table_name', $table_name)->where('reference_id', $reference_id);
-        $like->delete();
+        $like = Like::where('user_id', Auth::id())->where('table_name', $table_name)->where('reference_id', $reference_id);
+        if($like != null){
+            $like->delete();
+        }
+        else{
+            $like = "Not Found";
+        }
 
         return $this->createSuccessMessage($like);
     }
