@@ -35,14 +35,7 @@ class PostService extends WebService
         $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
         $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
 
-        $post = Post::get_network_post($date_start, $date_end)->where('user_id', Auth::id());
-        // $post = $post->get();
-
-        for ($i=0; $i < count($post); $i++) { 
-            $post[$i]['comment_count'] = Comment::where('post_id', $post[$i]->id)->count();
-            $post[$i]['like_count'] = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
-            $post[$i]['liked_by_me'] = Like::where('reference_id', $post[$i]->id)->where('posted_by', $request->user_id)->where('table_name', 'posts')->count();
-        }
+        $post = Post::get_network_post($date_start, $date_end);
 
         return $this->createSuccessMessage($post);
     }

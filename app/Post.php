@@ -58,8 +58,10 @@ class Post extends Model
     }
 
     public static function get_network_post($date_start = null, $date_end = null){
-        $post =  DB::table('posts')
+        $post =  DB::table('networks')
+                    ->join('posts', 'networks.following_id', '=', 'posts.posted_by')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
+                    ->where('networks.follower_id', '=',  Auth::id())
                     ->select('posts.*', 'users.first_name as posted_by_name');
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));

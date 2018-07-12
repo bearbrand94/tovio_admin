@@ -43,7 +43,7 @@ Route::post('like', 'WebServices\LikeService@store');
 Route::post('unlike', 'WebServices\LikeService@delete');
 
 //do follow service
-Route::get('follow/test', 'WebServices\FollowService@index');
+Route::get('follow/get', 'WebServices\FollowService@index');
 Route::post('follow', 'WebServices\FollowService@store');
 Route::post('unfollow', 'WebServices\FollowService@delete');
 

@@ -12,15 +12,4 @@ class Follow extends Model
     ];
     protected $table = "networks";
 
-    // Get all users who are following me
-	public function followers()
-	{
-	    return $this->belongsToMany(User, 'networks', 'follower_id', 'following_id')->withTimestamps();
-	}
-
-	// Get all users we are following
-	public function following()
-	{
-	    return $this->belongsToMany(User, 'networks', 'following_id', 'follower_id')->withTimestamps();
-	}
 }
