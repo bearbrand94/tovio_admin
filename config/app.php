@@ -164,6 +164,8 @@ return [
         // Searchy Class
         'Searchy' => TomLingham\Searchy\SearchyServiceProvider::class,
 
+        // adminLTE Boillerplate
+        JeroenNoten\LaravelAdminLte\ServiceProvider::class
     ],
 
     /*
