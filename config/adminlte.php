@@ -136,21 +136,25 @@ return [
         ],
         [
             'text'        => 'My Network',
-            'url'         => 'admin/pages',
+            'url'         => 'admin/users',
             'icon'        => 'file',
-            'label'       => 10,
-            'label_color' => 'success',
+            'label'       => 'not ready',
+            'label_color' => 'warning',
         ],
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
             'url'  => 'admin/settings',
             'icon' => 'user',
+            'label'       => 'not ready',
+            'label_color' => 'warning',
         ],
         [
             'text' => 'Change Password',
             'url'  => 'admin/settings',
             'icon' => 'lock',
+            'label'       => 'not ready',
+            'label_color' => 'warning',
         ],
         // [
         //     'text'    => 'Multilevel',
@@ -201,7 +205,7 @@ return [
         ],
         [
             'text'       => 'Information',
-            'icon_color' => 'aqua',
+            'icon_color' => 'green',
         ],
     ],
 
