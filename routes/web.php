@@ -11,28 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/',function(){
+    return view("auth/login");
 });
 
 // Route::get('/hello',function(){
 //     return 'Hello World!';
 // });
 
-Route::get('hello', 'Hello@index');
-Route::get('blade', function () {
-    $drinks = array('Vodka','Gin','Brandy');
-    return view('page',array('name' => 'The Raven','day' => 'Friday','drinks' => $drinks));
-});
-
-Route::get('/hello/{name}', 'Hello@show');
-Route::get('admin', function () {
-    return view('admin_template');
-});
-
-Route::get('adminlte', function () {
-    return view('test_adminlte');
-});
 
 //user service
 // Route::get('user', 'WebServices\UserService@index');
@@ -51,7 +37,9 @@ Route::get('adminlte', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin/home', 'HomeController@index')->name('home');
+Route::get('/admin/events', 'AdminController@event');
+Route::get('/admin/users', 'AdminController@user');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/event/list', 'PostController@get_post');
+Route::get('/user/list', 'UserController@get_user');

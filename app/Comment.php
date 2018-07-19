@@ -13,12 +13,12 @@ class Comment extends Model
         'created_at', 'updated_at',
     ];
 
-    public static function get_post_comment($post_id){
+    public static function get_post_comment($post_id, $page_show = 10){
         $comment = DB::table('comments')
                     ->join('users', 'users.id', '=', 'comments.commented_by')
                     ->where('post_id', $post_id)
                     ->select('comments.*', 'users.first_name as commented_by_name');
-        $comment = $comment->paginate(5);
+        $comment = $comment->paginate($page_show);
         $comment->appends(['post_id' => $post_id])->links();
                 
         for ($i=0; $i < count($comment); $i++) { 

@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => 'Tovio Admin Page',
 
     'title_prefix' => '',
 
@@ -30,9 +30,9 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Admin </b>Tovio',
 
-    'logo_mini' => '<b>A</b>LT',
+    'logo_mini' => '<b>T</b>ov',
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +108,7 @@ return [
     */
 
     'menu' => [
-        'MAIN NAVIGATION',
+        'ADMIN NAVIGATION',
         [
             'text' => 'Blog',
             'url'  => 'admin/blog',
@@ -124,14 +124,14 @@ return [
             'text'        => 'Event List',
             'url'         => 'admin/events',
             'icon'        => 'file',
-            'label'       => 525,
+            'label'       => 499,
             'label_color' => 'success',
         ],
         [
             'text'        => 'User List',
             'url'         => 'admin/users',
             'icon'        => 'file',
-            'label'       => 10,
+            'label'       => 11,
             'label_color' => 'success',
         ],
         [
@@ -152,44 +152,44 @@ return [
             'url'  => 'admin/settings',
             'icon' => 'lock',
         ],
-        [
-            'text'    => 'Multilevel',
-            'icon'    => 'share',
-            'submenu' => [
-                [
-                    'text' => 'Level One - One',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'Level One - Two',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'Level Two - One',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'Level Two - Two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'Level Three - One',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'Level Three - Two',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'Level One - Three',
-                    'url'  => '#',
-                ],
-            ],
-        ],
+        // [
+        //     'text'    => 'Multilevel',
+        //     'icon'    => 'share',
+        //     'submenu' => [
+        //         [
+        //             'text' => 'Level One - One',
+        //             'url'  => '#',
+        //         ],
+        //         [
+        //             'text'    => 'Level One - Two',
+        //             'url'     => '#',
+        //             'submenu' => [
+        //                 [
+        //                     'text' => 'Level Two - One',
+        //                     'url'  => '#',
+        //                 ],
+        //                 [
+        //                     'text'    => 'Level Two - Two',
+        //                     'url'     => '#',
+        //                     'submenu' => [
+        //                         [
+        //                             'text' => 'Level Three - One',
+        //                             'url'  => '#',
+        //                         ],
+        //                         [
+        //                             'text' => 'Level Three - Two',
+        //                             'url'  => '#',
+        //                         ],
+        //                     ],
+        //                 ],
+        //             ],
+        //         ],
+        //         [
+        //             'text' => 'Level One - Three',
+        //             'url'  => '#',
+        //         ],
+        //     ],
+        // ],
         'LEGENDS',
         [
             'text'       => 'Important',

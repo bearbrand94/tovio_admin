@@ -13,7 +13,7 @@ use Session;
 
 class PostService extends WebService
 {
-    public $page_show = 10;
+    public $page_show;
     public function index()
     {
         return $this->createSuccessMessage(Post::all());
@@ -24,26 +24,37 @@ class PostService extends WebService
         return $this->createSuccessMessage(Post::find($id));
     }
 
-    public function get_post(Request $request){
+    private function process_request_data(Request $request){
         $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
         $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
-        $post = Post::get_post($date_start, $date_end);
+        $page_show = $request->page_show ? $request->page_show : 10;
+
+        $request_data = $request;
+        $request_data->date_start = $date_start;
+        $request_data->date_end = $date_end;
+        $request_data->page_show = $page_show;
+        return $request_data;
+    }
+
+    public function get_post(Request $request){
+        $request = $this->process_request_data($request);
+
+        $post = Post::get_post($request->date_start, $request->date_end, $request->page_show);
         return $this->createSuccessMessage($post);
     }
 
     public function get_network_post(Request $request){
-        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
-        $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
+        $request = $this->process_request_data($request);
 
-        $post = Post::get_network_post($date_start, $date_end);
+        $post = Post::get_post($request->date_start, $request->date_end, $request->page_show);
 
         return $this->createSuccessMessage($post);
     }
 
     public function get_my_post(Request $request){
-        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
-        $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
-        $post = Post::get_my_post($date_start, $date_end);
+        $request = $this->process_request_data($request);
+
+        $post = Post::get_post($request->date_start, $request->date_end, $request->page_show);
         return $this->createSuccessMessage($post);
     }
 

@@ -165,7 +165,10 @@ return [
         'Searchy' => TomLingham\Searchy\SearchyServiceProvider::class,
 
         // adminLTE Boillerplate
-        JeroenNoten\LaravelAdminLte\ServiceProvider::class
+        JeroenNoten\LaravelAdminLte\ServiceProvider::class,
+
+        //yajrabox for datatables
+        Yajra\Datatables\DatatablesServiceProvider::class,
     ],
 
     /*

@@ -13,7 +13,7 @@ class Post extends Model
         'created_at', 'updated_at',
     ];
 
-    public static function get_post($date_start = null, $date_end = null){
+    public static function get_post($date_start = null, $date_end = null, $page_show = 10){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
                     ->select('posts.*', 'users.first_name as posted_by_name');
@@ -24,7 +24,7 @@ class Post extends Model
             $post = $post->where('schedule_date', '<', $date_end);
         }
         $post = $post->orderBy('schedule_date', 'desc');
-        $post = $post->paginate(5);
+        $post = $post->paginate($page_show);
         $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
 
         for ($i=0; $i < count($post); $i++) { 
@@ -35,7 +35,7 @@ class Post extends Model
         return $post;
     }
 
-    public static function get_my_post($date_start = null, $date_end = null){
+    public static function get_my_post($date_start = null, $date_end = null, $page_show = 10){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
                     ->select('posts.*', 'users.first_name as posted_by_name')->where('posted_by', Auth::id());
@@ -46,7 +46,7 @@ class Post extends Model
             $post = $post->where('schedule_date', '<', $date_end);
         }
         $post = $post->orderBy('schedule_date', 'desc');
-        $post = $post->paginate(5);
+        $post = $post->paginate($page_show);
         $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
 
         for ($i=0; $i < count($post); $i++) { 
@@ -57,7 +57,7 @@ class Post extends Model
         return $post;
     }
 
-    public static function get_network_post($date_start = null, $date_end = null){
+    public static function get_network_post($date_start = null, $date_end = null, $page_show = 10){
         $post =  DB::table('networks')
                     ->join('posts', 'networks.following_id', '=', 'posts.posted_by')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
@@ -70,7 +70,7 @@ class Post extends Model
             $post = $post->where('schedule_date', '<', $date_end);
         }
         $post = $post->orderBy('schedule_date', 'desc');
-        $post = $post->paginate(5);
+        $post = $post->paginate($page_show);
         $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
 
         for ($i=0; $i < count($post); $i++) { 

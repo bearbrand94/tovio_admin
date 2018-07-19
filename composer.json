@@ -11,7 +11,6 @@
         "ext-mbstring": "*",
         "aws/aws-sdk-php": "^3.20",
         "aws/aws-sdk-php-laravel": "~3.0",
-        "barryvdh/laravel-dompdf": "^0.8.1",
         "doctrine/dbal": "^2.5",
         "fideloper/proxy": "^4.0",
         "fzaninotto/faker": "~1.4",
@@ -24,7 +23,8 @@
         "maatwebsite/excel": "~2.1.0",
         "phpmd/phpmd": "^2.5",
         "symfony/psr-http-message-bridge": "^1.0",
-        "tom-lingham/searchy": "2.*"
+        "tom-lingham/searchy": "2.*",
+        "yajra/laravel-datatables-oracle": "^8.7"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
