@@ -17,9 +17,10 @@ class UserController extends Controller
         // return Datatables::of(User::query())->make(true);
 
         $user = DB::table('users')
-        		->join('networks as follower', 'follower.follower_id', '=', 'users.id')
-        		->join('networks as following', 'following.following_id', '=', 'users.id')
-        		->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.telephone', DB::raw('count(follower.*) as follower_count'), DB::raw('count(following.*) as following_count'))
+        		->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.telephone',
+        			DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
+        			DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+        		)
         		->groupBy('users.id');
 
         return Datatables::of($user)->make(true);
