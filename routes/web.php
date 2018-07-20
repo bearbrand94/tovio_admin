@@ -37,9 +37,13 @@ Route::get('/',function(){
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/admin/home', 'HomeController@index')->name('home');
+
+Route::get('/admin/home', 'HomeController@index');
 Route::get('/admin/events', 'AdminController@event');
+Route::get('/admin/event/detail', 'AdminController@event_detail');
+
 Route::get('/admin/users', 'AdminController@user');
+Route::get('/admin/user/detail', 'AdminController@user_detail');
 
 Route::get('/event/list', 'PostController@get_post');
 Route::get('/user/list', 'UserController@get_user');

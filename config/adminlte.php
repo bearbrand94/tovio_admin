@@ -136,7 +136,7 @@ return [
         ],
         [
             'text'        => 'My Network',
-            'url'         => 'admin/users',
+            'url'         => '#',
             'icon'        => 'file',
             'label'       => 'not ready',
             'label_color' => 'warning',
@@ -144,14 +144,14 @@ return [
         'ACCOUNT SETTINGS',
         [
             'text' => 'Profile',
-            'url'  => 'admin/settings',
+            'url'  => '#',
             'icon' => 'user',
             'label'       => 'not ready',
             'label_color' => 'warning',
         ],
         [
             'text' => 'Change Password',
-            'url'  => 'admin/settings',
+            'url'  => '#',
             'icon' => 'lock',
             'label'       => 'not ready',
             'label_color' => 'warning',

@@ -162,7 +162,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // Searchy Class
-        'Searchy' => TomLingham\Searchy\SearchyServiceProvider::class,
+        TomLingham\Searchy\SearchyServiceProvider::class,
 
         // adminLTE Boillerplate
         JeroenNoten\LaravelAdminLte\ServiceProvider::class,
@@ -217,6 +217,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Searchy' => TomLingham\Searchy\Facades\Searchy::class
 
     ],
 

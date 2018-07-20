@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Searchy;
+use DB;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -28,17 +29,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $table = "users";
+
     public static function  getUser($page, $show, $keyword, $sort_type, $key_sort){
         $data = User::select('*');
-        // if ($category != 'All') {
-        //     $data = $data->where('area_of_expertise', $category);
-        // }
-        // $data = $data->where('lbod',$lbod);
 
         if($keyword){
             if (env('DB_CONNECTION')=='mysql') {
                 /* CONNECTION MYSQL */
-                $temp = Searchy::user('first_name','last_name','username','email')->query($keyword)
+                $temp = Searchy::users('first_name','last_name','username','email')->query($keyword)
                                 ->getQuery();
                 if(!$key_sort){
                     $temp = $temp->skip($page*$show)->take($show)->get();
@@ -53,15 +52,15 @@ class User extends Authenticatable
                     return null;
                 }
                 if($key_sort){
-                    $data = $data->whereIn('user.id',$t)
+                    $data = $data->whereIn('users.id',$t)
                                 ->orderBy($key_sort,$sort_type);
                 }else{
-                    $data = $data->whereIn('user.id',$t)
-                        ->orderByRaw("field(user.id," . implode(',', $t) . ")");
+                    $data = $data->whereIn('users.id',$t)
+                        ->orderByRaw("field(users.id," . implode(',', $t) . ")");
                     }
             }else if (env('DB_CONNECTION')=='pgsql') {
                 /* CONNECTION PGSQL */
-                $temp2 = Searchy::user('first_name','last_name','username','email')->query($keyword)
+                $temp2 = Searchy::users('first_name','last_name','username','email')->query($keyword)
                                     ->getQuery()->toSql();
                 $temp = DB::table( DB::raw("(". $temp2 .") as qq") )->select('id','relevance')
                             ->where('qq.relevance','>',0);
@@ -78,11 +77,11 @@ class User extends Authenticatable
                     return null;
                 }
                 if($key_sort){
-                    $data = $data->whereIn('user.id',$t)
+                    $data = $data->whereIn('users.id',$t)
                                 ->orderBy($key_sort,$sort_type);
                 }else{
-                    $data = $data->whereIn('user.id',$t)
-                    ->orderByRaw("array_position(array[" . implode(',', $t) ."],user.id)");
+                    $data = $data->whereIn('users.id',$t)
+                    ->orderByRaw("array_position(array[" . implode(',', $t) ."],users.id)");
                 }
             }
 

@@ -140,7 +140,7 @@ class UserService extends WebService
 		$page = $request->page ? $request->page : 1;
         $show = $request->show ? $request->show : 15;
         $keyword = $request->keyword ? $request->keyword : null;
-        $key_sort = $request->key_sort ? $request->key_sort : 'first_name';
+        $key_sort = $request->key_sort ? $request->key_sort : null;
         $sort_type = $request->sort_type ? $request->sort_type : 'asc';
         $user = User::getUser($page-1, $show, $keyword, $sort_type, $key_sort);
         return $this->createSuccessMessage($user);
