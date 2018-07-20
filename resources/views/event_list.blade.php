@@ -50,12 +50,12 @@
 	        	"url": "{{ url('/event/list') }}"
 	        },
 			"columns": [
-	            {data: 'id'},
-	            {data: 'title'},
-	            {data: 'schedule_date'},
-	            {data: 'posted_by_name'},
-	            {data: 'comments_count'},
-	            {data: 'id'}
+	            {data: 'id', name: 'posts.id'},
+	            {data: 'title', name: 'posts.title'},
+	            {data: 'schedule_date', name: 'posts.schedule_date'},
+	            {data: 'username', name: 'users.username'},
+	            {data: 'comments_count', name: 'comments_count', searchable: false},
+	            {data: 'id', name: 'posts.id'}
 			],
 	        "columnDefs": [ 
 	            {

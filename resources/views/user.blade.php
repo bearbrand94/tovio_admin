@@ -18,7 +18,7 @@
   </div>
   <!-- /.box-header -->
   <div class="box-body">
-	<table id="event_list_table" class="display" width="100%">
+	<table id="user_list_table" class="display" width="100%">
 		<thead>
 			<th>Id</th>
 			<th>Email</th>
@@ -45,7 +45,7 @@
 
 	<script type="text/javascript"> 
 	$(document).ready(function() {
-	    $('#event_list_table').DataTable( {
+	    $('#user_list_table').DataTable( {
 	        "processing": true,
 	        "serverSide": true,
 	        "ajax": {
@@ -57,8 +57,8 @@
 	            {data: 'username'},
 	            {data: 'first_name'},
 	            {data: 'telephone'},
-	            {data: 'follower_count'},
-	            {data: 'following_count'},
+	            {data: 'follower_count', searchable: false},
+	            {data: 'following_count', searchable: false},
 	            {data: 'id'}
 			],
 	        "columnDefs": [ 
