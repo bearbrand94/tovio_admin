@@ -16,14 +16,14 @@ class Post extends Model
     public static function get_post($date_start = null, $date_end = null, $page_show = 10){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name');
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
             $post = $post->where('schedule_date', '>', $date_start);
             $post = $post->where('schedule_date', '<', $date_end);
         }
-        $post = $post->orderBy('schedule_date', 'desc');
+        $post = $post->orderBy('schedule_date', 'asc');
         $post = $post->paginate($page_show);
         $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
 
@@ -38,7 +38,7 @@ class Post extends Model
     public static function get_my_post($date_start = null, $date_end = null, $page_show = 10){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name')->where('posted_by', Auth::id());
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')->where('posted_by', Auth::id());
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
@@ -62,7 +62,7 @@ class Post extends Model
                     ->join('posts', 'networks.following_id', '=', 'posts.posted_by')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
                     ->where('networks.follower_id', '=',  Auth::id())
-                    ->select('posts.*', 'users.first_name as posted_by_name');
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
@@ -84,7 +84,7 @@ class Post extends Model
     public static function get_post_by_id($post_id){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name');
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
         $post = $post->where('posts.id', $post_id)->get();
 
         for ($i=0; $i < count($post); $i++) { 

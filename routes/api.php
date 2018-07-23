@@ -34,6 +34,8 @@ Route::post('post/delete', 'WebServices\PostService@delete');
 //comment service
 Route::get('comment/get', 'WebServices\CommentService@get_comment');
 Route::get('comment/post_comment', 'WebServices\CommentService@get_post_comment');
+Route::get('comment/comment_child', 'WebServices\CommentService@get_comment_child');
+
 Route::post('comment/add', 'WebServices\CommentService@store');
 Route::post('comment/edit', 'WebServices\CommentService@update');
 Route::post('comment/delete', 'WebServices\CommentService@delete');

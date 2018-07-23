@@ -30,8 +30,6 @@ class CommentService extends WebService
     }
 
     public function get_post_comment(Request $request){
-        $post_id = request()->post_id;
-
         $post_id = $request->post_id;
         $post['post_data'] = Post::get_post_by_id($post_id);
         if(count($post['post_data'])>0){
@@ -42,6 +40,15 @@ class CommentService extends WebService
             $post['data'] = $post_id;
         }
         return $this->createSuccessMessage($post);
+    }
+
+    public function get_comment_child(Request $request){
+        $comment_id = $request->comment_id;
+        $comment_child = Comment::get_comment_child($comment_id);
+        if(count($comment_child)<0){
+            $comment_child['info'] = "Reply Not Available";
+        }
+        return $this->createSuccessMessage($comment_child);
     }
 
     public function store(Request $request)

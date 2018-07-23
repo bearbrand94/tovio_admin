@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->text('content');
             $table->integer('commented_by');
             $table->datetime('comment_date')->useCurrent();
+            $table->integer('parent_id')->default(0);
             $table->timestamps();
         });
     }

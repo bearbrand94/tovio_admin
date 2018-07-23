@@ -14,7 +14,8 @@ class AdminController extends Controller
 		return view('event_list');
 	}
 
-	public function event_detail(){
+	public function event_detail(Request $request){
+		$event_id = $request->id;
 		return view('event_detail');
 	}
 
@@ -22,7 +23,7 @@ class AdminController extends Controller
 		return view('user');
 	}
 
-	public function user_detail(){
+	public function user_detail(Request $request){
 		return view('user_detail');
 	}
 }
