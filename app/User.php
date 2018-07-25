@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Searchy;
 use DB;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -31,7 +32,25 @@ class User extends Authenticatable
 
     protected $table = "users";
 
-    public static function  getUser($page, $show, $keyword, $sort_type, $key_sort){
+    public static function testSearchy($keyword){
+        $user_data = DB::table('users')
+            ->where('username', 'like', '%' . $keyword . '%')
+            ->orWhere('email', 'like', '%' . $keyword . '%')
+            ->get();
+        return $user_data;
+    }
+
+    public static function search_user($keyword, $show=10){
+        $user_data = DB::table('users')
+            ->where('username', 'like', '%' . $keyword . '%')
+            ->orWhere('email', 'like', '%' . $keyword . '%')
+            ->orWhere('first_name', 'like', '%' . $keyword . '%')
+            ->orWhere('last_name', 'like', '%' . $keyword . '%')
+            ->paginate($show);
+        return $user_data;
+    }
+
+    public static function  getUser_Searchy($page, $show, $keyword, $sort_type, $key_sort){
         $data = User::select('*');
 
         if($keyword){

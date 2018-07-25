@@ -19,6 +19,10 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->integer('posted_by');
             $table->datetime('schedule_date');
+            $table->string('original_image_url')->nullable();
+            $table->string('medium_image_url')->nullable();
+            $table->string('thumbnail_image_url')->nullable();
+            
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });

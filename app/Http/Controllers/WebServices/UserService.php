@@ -11,8 +11,14 @@ use Validator;
 use AWS;
 use Session;
 
+
 class UserService extends WebService
 {
+
+	public function searchUser(Request $request){
+		return $this->createSuccessMessage(User::search_user($request->keyword));
+	}
+
     public function signIn(Request $request) {
 		return $this->mobileSignIn($request->username, $request->password);
 	}
@@ -136,7 +142,7 @@ class UserService extends WebService
 		return $this->createSuccessMessage($new_user);
 	}
 
-	public function getUser(Request $request){
+	public function getUser_searchy(Request $request){
 		$page = $request->page ? $request->page : 1;
         $show = $request->show ? $request->show : 15;
         $keyword = $request->keyword ? $request->keyword : null;

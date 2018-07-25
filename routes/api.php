@@ -50,6 +50,7 @@ Route::post('follow', 'WebServices\FollowService@store');
 Route::post('unfollow', 'WebServices\FollowService@delete');
 
 //user service
+Route::get('user/search','WebServices\UserService@searchUser');
 Route::post('user/test','WebServices\UserService@testUser');
 Route::post('user/sign_up','WebServices\UserService@signUp');
 Route::post('user/sign_in','WebServices\UserService@signIn');
@@ -59,3 +60,4 @@ Route::post('user/sign_out','WebServices\UserService@signOut');
 
 // initial data
 Route::post('user/initial_data','WebServices\UserService@initialData');
+Route::post('testSearchy','WebServices\UserService@testSearchy');
