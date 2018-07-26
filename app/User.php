@@ -6,7 +6,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Searchy;
-use DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -18,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'username', 'password', 'first_name', 'last_name', 'telephone', 'address',
+        'email', 'username', 'password', 'first_name', 'last_name', 'telephone', 'address', 'gender', 'birthday', 'company', 'description', 'website', 'original_image_url', 'medium_image_url', 'thumbnail_image_url'
     ];
 
     /**
@@ -131,5 +132,21 @@ class User extends Authenticatable
     public function following()
     {
         return $this->belongsToMany(self::class, 'networks', 'follower_id', 'following_id')->withTimestamps();
+    }
+
+    public static function get_network($user_id){
+        $results = DB::select( DB::raw("
+            SELECT follower_id
+            FROM networks 
+            WHERE following_id = :user_id AND follower_id IN(
+                SELECT following_id
+                FROM networks
+                WHERE follower_id = :user_id
+            );
+        "), array(
+           'user_id' => $user_id,
+        ));
+
+        return $results;
     }
 }

@@ -15,6 +15,7 @@ class FollowService extends WebService
         $network = [];
         $network['follower'] = User::find(Auth::id())->followers()->get();
         $network['following'] = User::find(Auth::id())->following()->get();
+        $network['networks'] = User::get_network(Auth::id());
         return $this->createSuccessMessage($network);
     }
  

@@ -23,7 +23,7 @@ class PostsTableSeeder extends Seeder
                 'title' => $faker->sentence,
                 'content' => $faker->paragraph,
                 'posted_by' => $faker->numberBetween(1, 11),
-                'schedule_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
+                'schedule_date' => $faker->dateTimeBetween($startDate = 'now', $endDate = '+1 years'),
                 // 'is_completed' => $faker->boolean,
             ]);
         }

@@ -97,4 +97,13 @@ class PostService extends WebService
         }
         return $this->createSuccessMessage($post);
     }
+
+    public function uploadPicture(Request $request){        
+        $file = $request->file;
+        $category = $request->category;
+
+        $data = $this->uploadS3($file,$category);
+
+        return $this->createSuccessMessage($data);
+    }
 }

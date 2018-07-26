@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
-
+use App\Follow;
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -30,6 +30,17 @@ class UsersTableSeeder extends Seeder
             'last_name' => 'Wey',
             'telephone' => $faker->phoneNumber,
             'address' => $faker->address,
+
+            'gender' => 'male',
+            'birthday' => $faker->dateTimeBetween($startDate = '-30 years', $endDate = '-20 years'),
+
+            'company' => $faker->company,
+            'description' => $faker->sentence,
+            'website' => $faker->domainName,
+        ]);
+        Follow::create([
+            'follower_id' => 1,
+            'following_id' => 1,
         ]);
 
         // And now let's generate a few dozen users for our app:
@@ -42,6 +53,17 @@ class UsersTableSeeder extends Seeder
                 'last_name' => $faker->lastName,
                 'telephone' => $faker->phoneNumber,
                 'address' => $faker->address,
+
+                'gender' => $faker->randomElement($array = array ('male', 'female')),
+                'birthday' => $faker->dateTimeBetween($startDate = '-30 years', $endDate = '-20 years'),
+
+                'company' => $faker->company,
+                'description' => $faker->sentence,
+                'website' => $faker->domainName,
+            ]);
+            Follow::create([
+                'follower_id' => $i+2,
+                'following_id' => $i+2,
             ]);
         }
     }
