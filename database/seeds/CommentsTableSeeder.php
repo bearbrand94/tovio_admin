@@ -28,13 +28,23 @@ class CommentsTableSeeder extends Seeder
         // }
         
         for ($i = 1; $i < 500; $i++) {
-            for ($j = 0; $j < $faker->numberBetween(1, 50); $j++) {
+            for ($i = 1; $i < $faker->numberBetween(0, 10); $i++) {
                 Comment::create([
                     'post_id' => $i,
                     'content' => $faker->sentence,
                     'commented_by' => $faker->numberBetween(1, 11),
                     'comment_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
+                    'parent_id' => 0,
                 ]);
+                for ($j = 0; $j < $faker->numberBetween(0, 10); $j++) {
+                    Comment::create([
+                        'post_id' => $i,
+                        'content' => $faker->sentence,
+                        'commented_by' => $faker->numberBetween(1, 11),
+                        'comment_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
+                        'parent_id' => $i,
+                    ]);
+                }
             }
         }
     }
