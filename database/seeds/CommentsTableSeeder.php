@@ -28,7 +28,7 @@ class CommentsTableSeeder extends Seeder
         // }
         
         for ($i = 1; $i < 500; $i++) {
-            for ($i = 1; $i < $faker->numberBetween(0, 10); $i++) {
+            for ($j = 1; $j < $faker->numberBetween(0, 10); $j++) {
                 $comment = Comment::create([
                     'post_id' => $i,
                     'content' => $faker->sentence,
@@ -36,7 +36,7 @@ class CommentsTableSeeder extends Seeder
                     'comment_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
                     'parent_id' => 0,
                 ]);
-                $last_id = $comment->first()->id;
+                $last_id = $comment->id;
 
                 for ($j = 0; $j < $faker->numberBetween(0, 10); $j++) {
                     Comment::create([
