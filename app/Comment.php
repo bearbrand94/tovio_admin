@@ -25,7 +25,7 @@ class Comment extends Model
         for ($i=0; $i < count($comment); $i++) { 
 
 
-            $comment[$i]->comment_child_count = Comment::where('parent_id', $comment[$i]->id)->count();
+            $comment[$i]->comment_child_count = Comment::where('parent_id', $comment[$i]->id)->where('parent_id', '>', 0)->count();
             $comment[$i]->comment_like_count = Like::where('reference_id', $comment[$i]->id)->where('table_name', 'comments')->count();
             $comment[$i]->comment_like_count = Like::where('reference_id', $comment[$i]->id)->where('user_id', Auth::id())->where('table_name', 'comments')->count();    
         }
@@ -40,7 +40,7 @@ class Comment extends Model
                     ->select('comments.*', 'users.first_name as commented_by_name', 'users.username');
 
         for ($i=0; $i < count($comment); $i++) { 
-            $comment[$i]->comment_child_count = Comment::where('parent_id', $comment[$i]->id)->count();
+            $comment[$i]->comment_child_count = Comment::where('parent_id', $comment[$i]->id)->where('parent_id', '>', 0)->count();
             $comment[$i]->comment_child = $comment_child->get();
 
             $comment[$i]->comment_like_count = Like::where('reference_id', $comment[$i]->id)->where('table_name', 'comments')->count();
