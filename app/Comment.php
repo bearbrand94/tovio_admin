@@ -17,6 +17,7 @@ class Comment extends Model
         $comment = DB::table('comments')
                     ->join('users', 'users.id', '=', 'comments.commented_by')
                     ->where('post_id', $post_id)
+                    ->where('parent_id', 0)
                     ->select('comments.*', 'users.first_name as commented_by_name', 'users.username');
         $comment = $comment->paginate($page_show);
         $comment->appends(['post_id' => $post_id])->links();
