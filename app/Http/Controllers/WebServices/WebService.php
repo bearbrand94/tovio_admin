@@ -191,9 +191,9 @@ class WebService extends BaseController
 		        $keyOriginal = $aws_path['user_path'].$filenameOriginal;
         		break;
             case 'news':
-                $keyThumbnail = $aws_path['news_path'].$filenameThumbnail;
-                $keyMedium = $aws_path['news_path'].$filenameMedium;
-                $keyOriginal = $aws_path['news_path'].$filenameOriginal;
+                $keyThumbnail = $aws_path['post_path'].$filenameThumbnail;
+                $keyMedium = $aws_path['post_path'].$filenameMedium;
+                $keyOriginal = $aws_path['post_path'].$filenameOriginal;
                 break;
         	default:
         		# code...

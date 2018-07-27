@@ -100,7 +100,7 @@ class PostService extends WebService
 
     public function uploadPicture(Request $request){        
         $file = $request->file;
-        $category = $request->category;
+        $category = $request->category ? $request->category : "post";
 
         $data = $this->uploadS3($file,$category);
 

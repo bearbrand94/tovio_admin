@@ -58,6 +58,10 @@ Route::post('user/edit_user_profile','WebServices\UserService@editUserProfile');
 Route::post('user/get_user','WebServices\UserService@getUser');
 Route::post('user/sign_out','WebServices\UserService@signOut');
 
+/*Upload Picture*/
+Route::post('user/upload_picture','WebServices\UserService@uploadPicture');
+
+
 // initial data
 Route::post('user/initial_data','WebServices\UserService@initialData');
 Route::post('testSearchy','WebServices\UserService@testSearchy');
