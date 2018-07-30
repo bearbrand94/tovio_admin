@@ -39,7 +39,8 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script> console.log('Hi!'); 
+	</script>
 
 	<script type="text/javascript"> 
 	$(document).ready(function() {
@@ -67,7 +68,7 @@
 	                    button_code = '<div class="btn-group" role="group">';
 	                    button_code += '<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi <span class="caret"></span></button>';
 	                    button_code += '<ul class="dropdown-menu dropdown-menu-right">';
-	                    button_code += '    <li><a href="<?php echo url('/admin/event/detail'); ?>">Detail_' + data + '</a></li>';
+	                    button_code += '    <li><a href="<?php echo url('/admin/event/detail'); ?>?post_id=' + data + '">Detail_' + data + '</a></li>';
 	                    // button_code += '    <li><a href="<?php echo url('/admin/event/update'); ?>">Update_' + data + '</a></li>';
 	                    // button_code += '    <li><a href="<?php echo url('/admin/event/delete'); ?>">Delete_' + data + '</a></li>';
 	                    button_code += '   </ul>';

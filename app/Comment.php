@@ -49,7 +49,7 @@ class Comment extends Model
         return $comment;
     }
 
-    public static function get_comment_child($parent_id, $page_show = 10){
+    public static function get_comment_child($parent_id, $page_show = 3){
         $comment_child = DB::table('comments')
                 ->join('users', 'users.id', '=', 'comments.commented_by')
                 ->where('parent_id', $parent_id)

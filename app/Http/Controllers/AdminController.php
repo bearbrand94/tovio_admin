@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Post;
+use App\Comment;
 
 class AdminController extends Controller
 {
@@ -15,8 +17,14 @@ class AdminController extends Controller
 	}
 
 	public function event_detail(Request $request){
-		$event_id = $request->id;
-		return view('event_detail');
+		$event_data = Post::get_post_by_id($request->post_id);
+		$comment_data = Comment::get_post_comment($request->post_id);
+		return view('event_detail', 
+			[
+				'event_data' => $event_data,
+				'comment_data' => $comment_data
+			]
+		);
 	}
 
 	public function user(){

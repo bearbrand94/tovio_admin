@@ -89,8 +89,11 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); 
+    <script>
+      console.log('Hi!'); 
     	$( "#add-comment-box" ).prop( "disabled", true );
+      var _backendData = JSON.parse('{!! json_encode($event_data) !!}');
+      console.log(_backendData);
 	</script>
     
 @stop

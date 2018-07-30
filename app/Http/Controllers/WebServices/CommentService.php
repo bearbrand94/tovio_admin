@@ -23,6 +23,8 @@ class CommentService extends WebService
     }
 
     public function get_comment(Request $request){
+        // $request->page_show ? $request->page_show : $this->page_show;
+        
         $comment['comment'] = Comment::find($request->comment_id)->paginate($this->page_show);
         $comment['like_count'] = Like::where('reference_id', $request->comment_id)->where('table_name', 'comments')->count();
         $comment['liked_by_me'] = Like::where('reference_id', $request->comment_id)->where('user_id', $request->user_id)->where('table_name', 'comments')->count();       
