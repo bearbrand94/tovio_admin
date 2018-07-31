@@ -43,11 +43,31 @@ class User extends Authenticatable
 
     public static function search_user($keyword, $show=10){
         $user_data = DB::table('users')
+            ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
+                DB::raw('(select count(*) from posts where posted_by = "users"."id") as events_created'),
+                DB::raw('(select count(*) from posts where posted_by = "users"."id" and is_completed=true) as events_completed'),
+                DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
+                DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+            )
             ->where('username', 'like', '%' . $keyword . '%')
             ->orWhere('email', 'like', '%' . $keyword . '%')
             ->orWhere('first_name', 'like', '%' . $keyword . '%')
             ->orWhere('last_name', 'like', '%' . $keyword . '%')
             ->paginate($show);
+        return $user_data;
+    }
+
+    public static function getUserDetail($user_id){
+        $user_data = DB::table('users')
+            ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company',
+                DB::raw('(select count(*) from posts where posted_by = "users"."id") as events_created'),
+                DB::raw('(select count(*) from posts where posted_by = "users"."id" and is_completed=true) as events_completed'),
+                DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
+                DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+            )
+            ->where('id', $user_id)
+            ->groupBy('users.id')
+            ->get();
         return $user_data;
     }
 

@@ -24,7 +24,7 @@ class PostsTableSeeder extends Seeder
                 'content' => $faker->paragraph,
                 'posted_by' => $faker->numberBetween(1, 11),
                 'schedule_date' => $faker->dateTimeBetween($startDate = 'now', $endDate = '+1 years'),
-                // 'is_completed' => $faker->boolean,
+                'is_completed' => $faker->boolean($chanceOfGettingTrue = 50)
             ]);
         }
     }

@@ -12,9 +12,12 @@
         <div class="col-md-12">
           <div class="box box-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
+
             <div class="widget-user-header bg-aqua-active" style="background: url('{{asset('img/photo1.png')}}') center center;">
-              <h3 class="widget-user-username">Jonathan Burke Jr.</h3>
-              <h5 class="widget-user-desc">Founder &amp; CEO</h5>
+              <h3 class="widget-user-username">{{$user_data->first_name}} {{$user_data->last_name}}</h3>
+              <h5 class="widget-user-desc pull-right">Email: {{$user_data->email}}</h5>
+              <h5 class="widget-user-desc">{{$user_data->company}} Company</h5>
+              <h5 class="widget-user-desc pull-right">Website: {{$user_data->website}}</h5>
             </div>
             <div class="widget-user-image">
               <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Avatar">
@@ -23,14 +26,14 @@
               <div class="row">
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">50</h5>
+                    <h5 class="description-header">{{$user_data->events_created}}</h5>
                     <span class="description-text">EVENTS CREATED</span>
                   </div>
                   <!-- /.description-block -->
                 </div>
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">31</h5>
+                    <h5 class="description-header">{{$user_data->events_completed}}</h5>
                     <span class="description-text">EVENTS COMPLETED</span>
                   </div>
                   <!-- /.description-block -->
@@ -38,7 +41,7 @@
                 <!-- /.col -->
                 <div class="col-sm-3 border-right">
                   <div class="description-block">
-                    <h5 class="description-header">5</h5>
+                    <h5 class="description-header">{{$user_data->follower_count}}</h5>
                     <span class="description-text">FOLLOWERS</span>
                   </div>
                   <!-- /.description-block -->
@@ -46,7 +49,7 @@
                 <!-- /.col -->
                 <div class="col-sm-3">
                   <div class="description-block">
-                    <h5 class="description-header">3</h5>
+                    <h5 class="description-header">{{$user_data->following_count}}</h5>
                     <span class="description-text">FOLLOWING</span>
                   </div>
                   <!-- /.description-block -->
@@ -146,6 +149,8 @@
     $("tr").click(function() {
       window.location = "{{ url('/admin/event/detail') }}";
     });
+      var _backendData = JSON.parse('{!! json_encode($event_data) !!}');
+      console.log(_backendData);
 	</script>
     
 @stop

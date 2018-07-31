@@ -71,7 +71,7 @@
 	                    button_code = '<div class="btn-group" role="group">';
 	                    button_code += '<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi <span class="caret"></span></button>';
 	                    button_code += '<ul class="dropdown-menu dropdown-menu-right">';
-	                    button_code += '    <li><a href="<?php echo url('/admin/user/detail'); ?>">Detail' + data + '</a></li>';
+	                    button_code += '    <li><a href="<?php echo url('/admin/user/detail'); ?>?user_id=' + data + '">Detail_' + data + '</a></li>';
 	                    button_code += '   </ul>';
 	                    button_code += '</div>';
 	                    return button_code;

@@ -142,7 +142,7 @@ class UserService extends WebService
 		return $this->createSuccessMessage($new_user);
 	}
 
-	public function getUser_searchy(Request $request){
+	public function getUser(Request $request){
 		$page = $request->page ? $request->page : 1;
         $show = $request->show ? $request->show : 15;
         $keyword = $request->keyword ? $request->keyword : null;

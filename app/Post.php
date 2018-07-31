@@ -35,10 +35,10 @@ class Post extends Model
         return $post;
     }
 
-    public static function get_my_post($date_start = null, $date_end = null, $page_show = 10){
+    public static function get_user_post($date_start = null, $date_end = null, $page_show = 10, $user_id){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')->where('posted_by', Auth::id());
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')->where('posts.posted_by', $user_id);
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
@@ -52,7 +52,7 @@ class Post extends Model
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]->comment_count = Comment::where('post_id', $post[$i]->id)->count();
             $post[$i]->post_like_count = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
-            $post[$i]->post_liked_by_me = Like::where('reference_id', $post[$i]->id)->where('user_id', Auth::id())->where('table_name', 'posts')->count();    
+            $post[$i]->post_liked_by_me = Like::where('reference_id', $post[$i]->id)->where('user_id', $user_id)->where('table_name', 'posts')->count();    
         }
         return $post;
     }
