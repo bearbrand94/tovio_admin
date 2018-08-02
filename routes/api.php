@@ -20,7 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/test', function () {
     return "This text is returned from API";
 });
-Route::get('/get_user','WebServices\UserService@get_user');
 
 //post service
 // Route::get('post', 'WebServices\PostService@index');
@@ -50,6 +49,8 @@ Route::post('follow', 'WebServices\FollowService@store');
 Route::post('unfollow', 'WebServices\FollowService@delete');
 
 //user service
+
+Route::get('user/get','WebServices\UserService@get_user_list');
 Route::get('user/search','WebServices\UserService@searchUser');
 Route::post('user/test','WebServices\UserService@testUser');
 Route::post('user/sign_up','WebServices\UserService@signUp');

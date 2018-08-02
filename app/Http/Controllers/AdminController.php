@@ -42,7 +42,7 @@ class AdminController extends Controller
 		// 	$comment_data[$i]->child = Comment::get_comment_child($comment_data[$i]->id, 100);
 		// }
 
-		return view('userDetail', 
+		return view('userDet', 
 			[
 				'user_data' => User::getUserDetail($request->user_id)[0],
 				'event_data' => Post::get_user_post(null, null, 100, $request->user_id)

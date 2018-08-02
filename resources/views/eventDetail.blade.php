@@ -15,8 +15,8 @@
             <div class="box-header with-border">
               <div class="user-block">
                 <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Image">
-                <span class="username"><a href="#" id="posted_by">{{$event_data->posted_by_name}}</a></span>
-                <span class="description" id="schedule_date">Created at {{$event_data->created_at}}</span>
+                <span class="username"><a href="<?php echo url('/admin/user/detail') ?>?user_id={{$event_data->posted_by}}" id="posted_by">{{$event_data->posted_by_name}}</a></span>
+                <span class="description" id="schedule_date">Created at {{date('d M Y, H:i', strtotime($event_data->created_at))}}</span>
               </div>
               <!-- /.user-block -->
               <div class="box-tools">
@@ -32,9 +32,9 @@
             <div class="box-body">
               <img class="img-responsive pad" src="{{asset('img/photo2.png')}}" alt="Photo">
 
-              <p>Schedule Date: <b>{{$event_data->schedule_date}}</b></p>
+              <p>Schedule Date: <b>{{date('d M Y, H:i', strtotime($event_data->schedule_date))}}</b></p>
               <p>{{$event_data->content}}</p>
-              <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+<!--               <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button> -->
               <span class="pull-right text-muted">{{$event_data->post_like_count}} likes - {{$event_data->comment_count}} comments</span>
             </div>
             <!-- /.box-body -->
@@ -46,8 +46,8 @@
 
                 <div class="comment-text">
                       <span class="username">
-                        <a href="<?php echo url('/admin/users/detail') ?>?post_id='{{$comment->commented_by}}'">{{$comment->commented_by_name}}</a>
-                        <span class="text-muted pull-right">{{$comment->created_at}}</span>
+                        <a href="<?php echo url('/admin/user/detail') ?>?user_id={{$comment->commented_by}}">{{$comment->commented_by_name}}</a>
+                        <span class="text-muted pull-right">{{date('d M Y, H:i', strtotime($comment->created_at))}}</span>
                       </span><!-- /.username -->
                       qwerty{{$comment->content}}
                       {{$comment->child}}
@@ -57,8 +57,8 @@
                     <img class="img-circle img-sm" src="{{asset('img/avatar5.png')}}" alt="User Image">
                     <div class="comment-text">
                           <span class="username">
-                            <a href="<?php echo url('/admin/users/detail') ?>?post_id='{{$comment_child->commented_by}}'">{{$comment_child->commented_by_name}}</a>
-                            <span class="text-muted pull-right">{{$comment_child->created_at}}</span>
+                            <a href="<?php echo url('/admin/user/detail') ?>?user_id={{$comment_child->commented_by}}">{{$comment_child->commented_by_name}}</a>
+                            <span class="text-muted pull-right">{{date('d M Y, H:i', strtotime($comment_child->created_at))}}</span>
                           </span><!-- /.username -->
                           {{$comment_child->content}}
                     </div>
@@ -88,10 +88,10 @@
 
 @section('js')
     <script>
-      console.log('Hi!'); 
+      // console.log('Hi!'); 
     	$( "#add-comment-box" ).prop( "disabled", true );
-      var _backendData = JSON.parse('{!! json_encode($comment_data) !!}');
-      console.log(_backendData);
+      // var _backendData = JSON.parse('{!! json_encode($comment_data) !!}');
+      // console.log(_backendData);
 	</script>
     
 @stop

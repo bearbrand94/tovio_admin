@@ -142,13 +142,15 @@ class UserService extends WebService
 		return $this->createSuccessMessage($new_user);
 	}
 
-	public function getUser(Request $request){
-		$page = $request->page ? $request->page : 1;
-        $show = $request->show ? $request->show : 15;
-        $keyword = $request->keyword ? $request->keyword : null;
-        $key_sort = $request->key_sort ? $request->key_sort : null;
-        $sort_type = $request->sort_type ? $request->sort_type : 'asc';
-        $user = User::getUser($page-1, $show, $keyword, $sort_type, $key_sort);
+	public function get_user_list(Request $request){
+		$page_show;
+		$request->page_show ? $page_show=$request->page_show : $page_show=0;
+        $user = User::get_user_list($page_show);
+        for ($i=0; $i < count($user); $i++) { 
+        	$user[$i]->network = User::get_network($user[$i]->id);
+
+        	$user[$i]->network_count = count($user[$i]->network);
+        }
         return $this->createSuccessMessage($user);
 	}
 

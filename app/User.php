@@ -54,7 +54,31 @@ class User extends Authenticatable
             ->orWhere('first_name', 'like', '%' . $keyword . '%')
             ->orWhere('last_name', 'like', '%' . $keyword . '%')
             ->paginate($show);
+        $user_data->appends(['keyword' => $keyword])->links();
         return $user_data;
+    }
+
+    public static function get_user_list($show=0)
+    {
+        // return Datatables::of(User::query())->make(true);
+
+        $user = DB::table('users')
+                ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company',
+                    DB::raw('(select count(*) from posts where posted_by = "users"."id") as events_created'),
+                    DB::raw('(select count(*) from posts where posted_by = "users"."id" and is_completed=true) as events_completed'),
+                    DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
+                    DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+                )
+                ->groupBy('users.id');
+
+        if($show>0){
+            $user = $user->paginate($show);
+        }
+        else{
+            $user = $user->get();
+        }
+
+        return $user;
     }
 
     public static function getUserDetail($user_id){
@@ -70,6 +94,7 @@ class User extends Authenticatable
             ->get();
         return $user_data;
     }
+
 
     public static function  getUser_Searchy($page, $show, $keyword, $sort_type, $key_sort){
         $data = User::select('*');

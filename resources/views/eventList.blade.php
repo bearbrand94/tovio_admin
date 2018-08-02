@@ -24,6 +24,7 @@
 			<th>Title</th>
 			<th>Schedule Date</th>
 			<th>Posted By</th>
+			<th>Username</th>
 			<th>Comments</th>
 			<th>Action</th>
 		</thead>
@@ -43,44 +44,44 @@
 	</script>
 
 	<script type="text/javascript"> 
-	$(document).ready(function() {
-	    $('#event_list_table').DataTable( {
-	        "processing": true,
-	        "serverSide": true,
-	        "ajax": {
-	        	"url": "{{ url('/event/list') }}"
-	        },
-			"columns": [
-	            {data: 'id', name: 'posts.id'},
-	            {data: 'title', name: 'posts.title'},
-	            {data: 'schedule_date', name: 'posts.schedule_date'},
-	            {data: 'username', name: 'users.username'},
-	            {data: 'comments_count', name: 'comments_count', searchable: false},
-	            {data: 'id', name: 'posts.id'}
-			],
-	        "columnDefs": [ 
-	            {
-	                // The `data` parameter refers to the data for the cell (defined by the
-	                // `data` option, which defaults to the column being worked with, in
-	                // this case `data: 0`.
-	                "render": function ( data, type, row ) {
-	                    var button_code;
-	                    button_code = '<div class="btn-group" role="group">';
-	                    button_code += '<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi <span class="caret"></span></button>';
-	                    button_code += '<ul class="dropdown-menu dropdown-menu-right">';
-	                    button_code += '    <li><a href="<?php echo url('/admin/event/detail'); ?>?post_id=' + data + '">Detail_' + data + '</a></li>';
-	                    // button_code += '    <li><a href="<?php echo url('/admin/event/update'); ?>">Update_' + data + '</a></li>';
-	                    // button_code += '    <li><a href="<?php echo url('/admin/event/delete'); ?>">Delete_' + data + '</a></li>';
-	                    button_code += '   </ul>';
-	                    button_code += '</div>';
-	                    return button_code;
-	                },
-	                "className": "text-center",
-	                "targets": 5
-	            }
-	        ]
-	    });
-
-	} );	
+		$(document).ready(function() {
+		    $('#event_list_table').DataTable( {
+		        "processing": true,
+		        "serverSide": true,
+		        "ajax": {
+		        	"url": "{{ url('/event/list') }}"
+		        },
+				"columns": [
+		            {data: 'id', name: 'posts.id'},
+		            {data: 'title', name: 'posts.title'},
+		            {data: 'schedule_date', name: 'posts.schedule_date'},
+		            {data: 'first_name', name: 'users.first_name'},
+		            {data: 'username', name: 'users.username'},
+		            {data: 'comments_count', name: 'comments_count', searchable: false},
+		            {data: 'id', name: 'posts.id'}
+				],
+		        "columnDefs": [ 
+		            {
+		                // The `data` parameter refers to the data for the cell (defined by the
+		                // `data` option, which defaults to the column being worked with, in
+		                // this case `data: 0`.
+		                "render": function ( data, type, row ) {
+		                    var button_code;
+		                    button_code = '<div class="btn-group" role="group">';
+		                    button_code += '<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aksi <span class="caret"></span></button>';
+		                    button_code += '<ul class="dropdown-menu dropdown-menu-right">';
+		                    button_code += '    <li><a href="<?php echo url('/admin/event/detail'); ?>?post_id=' + data + '">Detail</a></li>';
+		                    // button_code += '    <li><a href="<?php echo url('/admin/event/update'); ?>">Update_' + data + '</a></li>';
+		                    // button_code += '    <li><a href="<?php echo url('/admin/event/delete'); ?>">Delete_' + data + '</a></li>';
+		                    button_code += '   </ul>';
+		                    button_code += '</div>';
+		                    return button_code;
+		                },
+		                "className": "text-center",
+		                "targets": 6
+		            }
+		        ]
+		    });
+		} );	
 	</script>
 @stop
