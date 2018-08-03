@@ -21,6 +21,27 @@ Route::get('/test', function () {
     return "This text is returned from API";
 });
 
+Route::post('/search', function (Request $request) {
+	$page_show = $request->page_show ? $request->page_show : 10;
+	$page = $request->page ? $request->page : 1;
+	switch (strtolower($request->table)) {
+		case 'post':
+			return App\Post::search_post($request->keyword, $page_show, $page);
+			break;
+		case 'user':
+			return App\User::search_user($request->keyword, $page_show, $page);
+			break;
+		case 'tag':
+			return App\Post::search_tag($request->keyword, $page_show, $page);
+			break;
+				
+		default:
+			return "There is no table selected";
+			break;
+	}
+    
+});
+
 //post service
 // Route::get('post', 'WebServices\PostService@index');
 Route::get('post/get', 'WebServices\PostService@get_post');
@@ -48,8 +69,13 @@ Route::get('follow/get', 'WebServices\FollowService@index');
 Route::post('follow', 'WebServices\FollowService@store');
 Route::post('unfollow', 'WebServices\FollowService@delete');
 
-//user service
 
+//do like service
+Route::post('tag/add', 'WebServices\TagService@store');
+Route::post('tag/delete', 'WebServices\TagService@delete');
+
+
+//user service
 Route::get('user/get','WebServices\UserService@get_user_list');
 Route::get('user/search','WebServices\UserService@searchUser');
 Route::post('user/test','WebServices\UserService@testUser');

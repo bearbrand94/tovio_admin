@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Searchy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class User extends Authenticatable
 {
@@ -41,7 +42,7 @@ class User extends Authenticatable
         return $user_data;
     }
 
-    public static function search_user($keyword, $show=10){
+    public static function search_user($keyword, $paginate=10, $page=1){
         $user_data = DB::table('users')
             ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
                 DB::raw('(select count(*) from posts where posted_by = "users"."id") as events_created'),
@@ -49,13 +50,15 @@ class User extends Authenticatable
                 DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
                 DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
             )
-            ->where('username', 'like', '%' . $keyword . '%')
-            ->orWhere('email', 'like', '%' . $keyword . '%')
-            ->orWhere('first_name', 'like', '%' . $keyword . '%')
-            ->orWhere('last_name', 'like', '%' . $keyword . '%')
-            ->paginate($show);
-        $user_data->appends(['keyword' => $keyword])->links();
-        return $user_data;
+            ->where('username', 'ilike', '%' . $keyword . '%')
+            ->orWhere('email', 'ilike', '%' . $keyword . '%')
+            ->orWhere('first_name', 'ilike', '%' . $keyword . '%')
+            ->orWhere('last_name', 'ilike', '%' . $keyword . '%')
+            ->get();
+
+        $slice = array_slice($user_data->toArray(), $paginate * ($page - 1), $paginate);
+        $result = new LengthAwarePaginator($slice, count($user_data), $paginate);
+        return $result;
     }
 
     public static function get_user_list($show=0)
