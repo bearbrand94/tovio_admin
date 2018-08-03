@@ -26,13 +26,21 @@ Route::post('/search', function (Request $request) {
 	$page = $request->page ? $request->page : 1;
 	switch (strtolower($request->table)) {
 		case 'post':
-			return App\Post::search_post($request->keyword, $page_show, $page);
+			$post_data = App\Post::search_post($request->keyword, $page_show, $page);
+			for ($i=0; $i < count($post_data); $i++) { 
+				$post_data[$i]->user_data = App\User::getUserDetail($post_data[$i]->posted_by);
+			}
+			return $post_data;
 			break;
 		case 'user':
 			return App\User::search_user($request->keyword, $page_show, $page);
 			break;
 		case 'tag':
-			return App\Post::search_tag($request->keyword, $page_show, $page);
+			$tag_data = App\Post::search_tag($request->keyword, $page_show, $page);
+			for ($i=0; $i < count($tag_data); $i++) { 
+				$tag_data[$i]->user_data = App\User::getUserDetail($tag_data[$i]->user_id);
+			}
+			return $tag_data;
 			break;
 				
 		default:
