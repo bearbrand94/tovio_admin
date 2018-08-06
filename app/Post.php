@@ -19,12 +19,12 @@ class Post extends Model
         $post_data = DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
                     ->select(DB::raw("'posts' as table_name"), 'posts.id as reference_id', 'posts.content', 'posts.posted_by as user_id', 'users.first_name as posted_by_name', 'users.username', 'posts.created_at')
-                    ->where('content', 'ilike', '%' . $keyword . '%');
+                    ->where('content', 'ilike', '%#' . $keyword . '%');
 
         $comment_data = DB::table('comments')
                     ->join('users', 'users.id', '=', 'comments.commented_by')
                     ->select(DB::raw("'comments' as table_name"), 'comments.id as reference_id', 'comments.content', 'comments.commented_by as user_id', 'users.first_name as posted_by_name', 'users.username', 'comments.created_at')
-                    ->where('content', 'ilike', '%' . $keyword . '%')
+                    ->where('content', 'ilike', '%#' . $keyword . '%')
                     ->union($post_data)
                     ->orderBy('created_at', 'desc')
                     ->get();

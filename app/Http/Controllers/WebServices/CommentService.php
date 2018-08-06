@@ -60,19 +60,19 @@ class CommentService extends WebService
         $content = $request->content;
         $commented_by = $request->commented_by;
         $comment_date = $request->comment_date;
+        $parent_id = $request->parent_id ? $request->parent_id : 0;
 
-        $post = new Comment();
-        $post->post_id = $post_id;
-        $post->content = $content;
-        $post->commented_by = $commented_by;
-        $post->comment_date = Date('Y-m-d h:i:s',strtotime($comment_date));
-        
-        $post->save();
 
-        return $this->createSuccessMessage($post);
+        $comment = new Comment();
+        $comment->post_id = $post_id;
+        $comment->content = $content;
+        $comment->commented_by = $commented_by;
+        $comment->comment_date = Date('Y-m-d h:i:s',strtotime($comment_date));
+        $comment->parent_id = $parent_id;
 
-        // $post = Post::create($request->all());
-        // return response()->json($post, 201);
+        $comment->save();
+
+        return $this->createSuccessMessage($comment);
     }
 
     public function update(Request $request)

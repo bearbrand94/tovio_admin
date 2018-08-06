@@ -74,8 +74,8 @@ class PostService extends WebService
 
         return $this->createSuccessMessage($post);
 
-        $post = Post::create($request->all());
-        return response()->json($post, 201);
+        // $post = Post::create($request->all());
+        // return response()->json($post, 201);
     }
 
     public function update(Request $request)
