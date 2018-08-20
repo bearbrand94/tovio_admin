@@ -25,12 +25,12 @@ class PostService extends WebService
     }
 
     private function process_request_data(Request $request){
-        // $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime("1980-01-01"));
+        $date_start = $request->date_start ? Date('Y-m-d h:i:s',strtotime($request->date_start)) : Date('Y-m-d h:i:s',strtotime(now()));
         // $date_end = $request->date_end ? Date('Y-m-d h:i:s',strtotime($request->date_end)) : Date('Y-m-d h:i:s',strtotime(now()));
         $page_show = $request->page_show ? $request->page_show : 10;
 
         $request_data = $request;
-        // $request_data->date_start = $date_start;
+        $request_data->date_start = $date_start;
         // $request_data->date_end = $date_end;
         $request_data->page_show = $page_show;
         return $request_data;

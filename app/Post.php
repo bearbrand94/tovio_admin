@@ -54,12 +54,15 @@ class Post extends Model
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
                     ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
-        if($date_start && $date_end){
+        if($date_start){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
-            $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
             $post = $post->where('schedule_date', '>', $date_start);
+        }
+        if($date_end){
+            $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
             $post = $post->where('schedule_date', '<', $date_end);
         }
+
         $post = $post->orderBy('schedule_date', 'asc');
         $post = $post->paginate($page_show);
         $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
