@@ -39,8 +39,6 @@ class UserService extends WebService
 
 	public function signUp(Request $request) {
 
-        $path = $request->file('user_image')->store('public/users');
-
 		$email = strtolower($request->email);
 		$username = $request->username;
 		$password = $request->password;
@@ -86,9 +84,13 @@ class UserService extends WebService
 		$new_user->telephone = $telephone;
 		$new_user->username = $username;
 		$new_user->address = $address;
+
+        $contents = $request->file('user_image');
+        $path = Storage::disk('public')->put('users', $contents);
         if($path){
             $new_user->original_image_url = $path;
         }
+
 		$new_user->medium_image_url = $medium_image_url;
 		$new_user->thumbnail_image_url = $thumbnail_image_url;
 		$new_user->keterangan = $keterangan;
@@ -140,9 +142,13 @@ class UserService extends WebService
 		$new_user->telephone = $telephone;
 		$new_user->username = $username;
 		$new_user->address = $address;
+		
+        $contents = $request->file('user_image');
+        $path = Storage::disk('public')->put('users', $contents);
         if($path){
             $new_user->original_image_url = $path;
         }
+
 		$new_user->medium_image_url = $medium_image_url;
 		$new_user->thumbnail_image_url = $thumbnail_image_url;
 		$new_user->keterangan = $keterangan;

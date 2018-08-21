@@ -87,10 +87,12 @@ class PostService extends WebService
         $post->schedule_date = Date('Y-m-d h:i:s',strtotime($schedule_date));
         $post->posted_by = Auth::id();
 
-        $path = $request->file('post_image')->store('public/posts');
+        $contents = $request->file('post_image');
+        $path = Storage::disk('public')->put('posts', $contents);
         if($path){
             $post->original_image_url = $path;
         }
+
         $post->save();
 
         return $this->createSuccessMessage($post);
@@ -102,6 +104,13 @@ class PostService extends WebService
     public function update(Request $request)
     {
         $post = Post::find($request->post_id);
+
+        $contents = $request->file('post_image');
+        $path = Storage::disk('public')->put('posts', $contents);
+        if($path){
+            $post->original_image_url = $path;
+        }
+        
         $post->update($request->all());
 
         return $this->createSuccessMessage($post);
