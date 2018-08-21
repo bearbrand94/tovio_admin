@@ -21,6 +21,13 @@ Route::get('/test', function () {
     return "This text is returned from API";
 });
 
+Route::post('test/upload/image', 'WebServices\PostService@upload_picture');
+
+Route::get('test/get/image', function ()
+{
+    return '<img class="img-circle" src="' . URL::to('/storage/posts/wKm8REGl2IwYgitxQpNqG4TW1W2OU9uiZZmQE1HH.jpeg') . '" alt="User Avatar">';
+});
+
 Route::post('/search', function (Request $request) {
 	$page_show = $request->page_show ? $request->page_show : 10;
 	$page = $request->page ? $request->page : 1;
@@ -47,7 +54,6 @@ Route::post('/search', function (Request $request) {
 			return "There is no table selected";
 			break;
 	}
-    
 });
 
 //post service
