@@ -20,7 +20,6 @@ class PostService extends WebService
     public function get_picture(Request $request)
     {
         $contents = Storage::get('posts/WkQDFCtmcPv5wUDnqPClmI2fWnQ00QEiH9NbzCu4.jpeg');
-
         return $contents;
     }
 

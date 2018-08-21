@@ -18,7 +18,7 @@ class Comment extends Model
                     ->join('users', 'users.id', '=', 'comments.commented_by')
                     ->where('post_id', $post_id)
                     ->where('parent_id', 0)
-                    ->select('comments.*', 'users.first_name as commented_by_name', 'users.username');
+                    ->select('comments.*', 'users.first_name as commented_by_name', 'users.username', 'users.original_image_url as user_image_url');
         $comment = $comment->paginate($page_show);
         $comment->appends(['post_id' => $post_id])->links();
                 
@@ -37,7 +37,7 @@ class Comment extends Model
                     ->join('posts', 'networks.following_id', '=', 'comments.commented_by')
                     ->join('users', 'users.id', '=', 'comments.commented_by')
                     ->where('networks.follower_id', '=',  Auth::id())
-                    ->select('comments.*', 'users.first_name as commented_by_name', 'users.username');
+                    ->select('comments.*', 'users.first_name as commented_by_name', 'users.username', 'users.original_image_url as user_image_url');
 
         for ($i=0; $i < count($comment); $i++) { 
             $comment[$i]->comment_child_count = Comment::where('parent_id', $comment[$i]->id)->where('parent_id', '>', 0)->count();
@@ -53,7 +53,7 @@ class Comment extends Model
         $comment_child = DB::table('comments')
                 ->join('users', 'users.id', '=', 'comments.commented_by')
                 ->where('parent_id', $parent_id)
-                ->select('comments.*', 'users.first_name as commented_by_name', 'users.username');
+                ->select('comments.*', 'users.first_name as commented_by_name', 'users.username', 'users.original_image_url as user_image_url');
         $comment_child = $comment_child->paginate($page_show);
         return $comment_child;
     }

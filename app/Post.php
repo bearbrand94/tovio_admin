@@ -124,7 +124,7 @@ class Post extends Model
     public static function get_post_by_id($post_id){
         $post =  DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
+                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username', 'users.original_image_url as user_image_url');
         $post = $post->where('posts.id', $post_id)->get();
 
         for ($i=0; $i < count($post); $i++) { 

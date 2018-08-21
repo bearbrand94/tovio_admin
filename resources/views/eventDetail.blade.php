@@ -14,7 +14,13 @@
           <div class="box box-widget">
             <div class="box-header with-border">
               <div class="user-block">
+
+                @if($event_data->user_image_url == "")
                 <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Image">
+                @else
+                <img class="img-circle" src="{{asset('storage/'.$event_data->user_image_url)}}" alt="User Image">
+                @endif
+
                 <span class="username"><a href="<?php echo url('/admin/user/detail') ?>?user_id={{$event_data->posted_by}}" id="posted_by">{{$event_data->posted_by_name}}</a></span>
                 <span class="description" id="schedule_date">Created at {{date('d M Y, H:i', strtotime($event_data->created_at))}}</span>
               </div>
@@ -46,7 +52,12 @@
               @foreach($comment_data as $comment)
               <div class="box-comment">
                 <!-- User image -->
-                <img class="img-circle img-sm" src="{{asset('img/avatar5.png')}}" alt="User Image">
+
+                @if($comment->user_image_url == "")
+                <img class="img-circle img-sm" src="{{asset('img/avatar.png')}}" alt="User Image">
+                @else
+                <img class="img-circle img-sm" src="{{asset('storage/'.$comment->user_image_url)}}" alt="User Image">
+                @endif
 
                 <div class="comment-text">
                       <span class="username">
@@ -58,7 +69,11 @@
                 </div>
                 @foreach($comment->child as $comment_child)
                   <div class="box-comment" style="margin-left: 50px;">
-                    <img class="img-circle img-sm" src="{{asset('img/avatar5.png')}}" alt="User Image">
+                    @if($comment_child->user_image_url == "")
+                    <img class="img-circle img-sm" src="{{asset('img/avatar.png')}}" alt="User Image">
+                    @else
+                    <img class="img-circle img-sm" src="{{asset('storage/'.$comment_child->user_image_url)}}" alt="User Image">
+                    @endif
                     <div class="comment-text">
                           <span class="username">
                             <a href="<?php echo url('/admin/user/detail') ?>?user_id={{$comment_child->commented_by}}">{{$comment_child->commented_by_name}}</a>

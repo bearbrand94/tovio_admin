@@ -95,7 +95,7 @@ Route::get('user/search','WebServices\UserService@searchUser');
 Route::post('user/test','WebServices\UserService@testUser');
 Route::post('user/sign_up','WebServices\UserService@signUp');
 Route::post('user/sign_in','WebServices\UserService@signIn');
-Route::post('user/edit_user_profile','WebServices\UserService@editUserProfile');
+Route::post('user/edit','WebServices\UserService@editUserProfile');
 Route::post('user/get_user_detail','WebServices\UserService@getUserDetail');
 Route::post('user/sign_out','WebServices\UserService@signOut');
 

@@ -20,7 +20,11 @@
               <h5 class="widget-user-desc pull-right">Website: {{$user_data->website}}</h5>
             </div>
             <div class="widget-user-image">
-              <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Avatar">
+                @if($user_data->original_image_url == "")
+                <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Image">
+                @else
+                <img class="img-circle" src="{{asset('storage/'.$user_data->original_image_url)}}" alt="User Image">
+                @endif
             </div>
             <div class="box-footer">
               <div class="row">

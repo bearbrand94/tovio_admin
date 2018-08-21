@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use AWS;
 use Session;
-
+use Illuminate\Support\Facades\Storage;
 
 class UserService extends WebService
 {
@@ -46,6 +46,13 @@ class UserService extends WebService
 		$last_name = $request->last_name;
 		$telephone = $request->telephone;
 		$address = $request->address;
+
+		$gender = $request->gender;
+		$birthday = $request->birthday;
+		$company = $request->company;
+		$description = $request->description;
+		$website = $request->website;
+
 		$original_image_url = $request->original_image_url;
 		$medium_image_url = $request->medium_image_url;
 		$thumbnail_image_url = $request->thumbnail_image_url;
@@ -85,6 +92,12 @@ class UserService extends WebService
 		$new_user->username = $username;
 		$new_user->address = $address;
 
+		$new_user->gender = $gender;
+		$new_user->birthday = $birthday;
+		$new_user->company = $company;
+		$new_user->description = $description;
+		$new_user->website = $website;
+
         $contents = $request->file('user_image');
         $path = Storage::disk('public')->put('users', $contents);
         if($path){
@@ -115,9 +128,6 @@ class UserService extends WebService
 	}
 
 	public function editUserProfile(Request $request){
-
-        $path = $request->file('user_image')->store('public/users');
-		        
 		$id = $request->id;
 		$email = strtolower($request->email);
 		$username = $request->username;
@@ -125,6 +135,13 @@ class UserService extends WebService
 		$last_name = $request->last_name;
 		$telephone = $request->telephone;
 		$address = $request->address;
+
+		$gender = $request->gender;
+		$birthday = $request->birthday;
+		$company = $request->company;
+		$description = $request->description;
+		$website = $request->website;
+
 		$original_image_url = $request->original_image_url;
 		$medium_image_url = $request->medium_image_url;
 		$thumbnail_image_url = $request->thumbnail_image_url;
@@ -136,13 +153,19 @@ class UserService extends WebService
 			return $this->createErrorMessage('user not found',400);
 		}
 
-		$new_user->first_name = $first_name;
-		$new_user->last_name = $last_name;
-		$new_user->email = $email;
-		$new_user->telephone = $telephone;
-		$new_user->username = $username;
-		$new_user->address = $address;
-		
+		$first_name ? $new_user->first_name = $first_name : $new_user->first_name;
+		$last_name ? $new_user->last_name = $last_name : $new_user->last_name;
+		// $new_user->email = $email;
+		$telephone ? $new_user->telephone = $telephone : $new_user->telephone;
+		// $new_user->username = $username;
+		$address ? $new_user->address = $address : $new_user->address;
+
+		$gender ? $new_user->gender = $gender : $new_user->gender;
+		$birthday ? $new_user->birthday = $birthday : $new_user->birthday;
+		$company ? $new_user->company = $company : $new_user->company;
+		$description ? $new_user->description = $description : $new_user->description;
+		$website ? $new_user->website = $website : $new_user->website;
+
         $contents = $request->file('user_image');
         $path = Storage::disk('public')->put('users', $contents);
         if($path){
