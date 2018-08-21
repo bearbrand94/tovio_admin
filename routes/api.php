@@ -23,9 +23,9 @@ Route::get('/test', function () {
 
 Route::post('test/upload/image', 'WebServices\PostService@upload_picture');
 
-Route::get('test/get/image', function ()
+Route::get('test/get/image/', function (Request $request)
 {
-    return '<img class="img-circle" src="' . URL::to('/storage/posts/wKm8REGl2IwYgitxQpNqG4TW1W2OU9uiZZmQE1HH.jpeg') . '" alt="User Avatar">';
+    return '<img class="img-circle" src="' . URL::to('/storage') . "/". $request->image_url . '" alt="User Avatar">';
 });
 
 Route::post('/search', function (Request $request) {
