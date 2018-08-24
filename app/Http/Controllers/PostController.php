@@ -18,8 +18,8 @@ class PostController extends Controller
 
         $post = DB::table('posts')
         		->join('users', 'users.id', '=', 'posts.posted_by')
-        		->join('comments', 'comments.post_id', '=', 'posts.id')
-        		->select('posts.id', 'posts.title', 'posts.schedule_date', 'users.first_name', 'users.username', DB::raw('count(comments.id) as comments_count'))
+        		// ->join('comments', 'comments.post_id', '=', 'posts.id')
+        		->select('posts.id', 'posts.title', 'posts.schedule_date', 'users.first_name', 'users.username')
         		->groupBy('posts.id')
                 ->groupBy('users.first_name')
         		->groupBy('users.username');

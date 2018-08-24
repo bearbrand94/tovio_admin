@@ -84,7 +84,8 @@ class PostService extends WebService
         $post->title = $title;
         $post->content = $content;
         $post->schedule_date = Date('Y-m-d h:i:s',strtotime($schedule_date));
-        $post->posted_by = Auth::id();
+        $posted_by != null ? $post->posted_by = $posted_by : $post->posted_by = Auth::id();
+        // $post->posted_by = Auth::id();
 
         $contents = $request->file('post_image');
         $path = Storage::disk('public')->put('posts', $contents);

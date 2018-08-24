@@ -34,16 +34,21 @@ Route::get('/',function(){
 
 // // initial data
 // Route::post('initial_data','WebServices\UserService@initialData');
-Auth::routes();
+Route::group(['middleware' => 'web'], function () {
+	Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/admin/home', 'HomeController@index');
-Route::get('/admin/events', 'AdminController@event');
-Route::get('/admin/event/detail', 'AdminController@event_detail');
+	Route::get('/admin/home', 'HomeController@index');
+	Route::get('/admin/events', 'AdminController@event');
+	Route::get('/admin/event/list', 'AdminController@event');
+	Route::get('/admin/event/detail', 'AdminController@event_detail');
+	Route::get('/admin/event/create', 'AdminController@event_create');
+	Route::post('admin/event/add', 'AdminController@event_store');
 
-Route::get('/admin/users', 'AdminController@user');
-Route::get('/admin/user/detail', 'AdminController@user_detail');
+	Route::get('/admin/users', 'AdminController@user');
+	Route::get('/admin/user/detail', 'AdminController@user_detail');
 
-Route::get('/event/list', 'PostController@get_post');
-Route::get('/user/list', 'UserController@get_user');
+	Route::get('/event/list', 'PostController@get_post');
+	Route::get('/user/list', 'UserController@get_user');
+});

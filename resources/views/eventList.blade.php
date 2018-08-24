@@ -25,14 +25,14 @@
 			<th>Schedule Date</th>
 			<th>Posted By</th>
 			<th>Username</th>
-			<th>Comments</th>
+			<!-- <th>Comments</th> -->
 			<th>Action</th>
 		</thead>
 	</table>
   </div>
   <!-- /.box-body -->
   <div class="box-footer">
-    The footer of the box
+    <button type="button" class="btn btn-success btn-flat btn-sm pull-right" id="btn-create">Create New Event</button>
   </div>
   <!-- box-footer -->
 </div>
@@ -57,7 +57,7 @@
 		            {data: 'schedule_date', name: 'posts.schedule_date'},
 		            {data: 'first_name', name: 'users.first_name'},
 		            {data: 'username', name: 'users.username'},
-		            {data: 'comments_count', name: 'comments_count', searchable: false},
+		            // {data: 'comments_count', name: 'comments_count', searchable: false},
 		            {data: 'id', name: 'posts.id'}
 				],
 		        "columnDefs": [ 
@@ -78,10 +78,15 @@
 		                    return button_code;
 		                },
 		                "className": "text-center",
-		                "targets": 6
+		                "targets": 5
 		            }
-		        ]
+		        ],
+		        "order": [ 0, 'desc' ]
 		    });
 		} );	
+
+		$("#btn-create").on("click", function() {
+			window.location.replace("{{ url('admin/event/create') }}");
+		});
 	</script>
 @stop

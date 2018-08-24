@@ -30,7 +30,6 @@
                   <i class="fa fa-circle-o"></i></button> -->
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
               <!-- /.box-tools -->
             </div>
@@ -43,7 +42,7 @@
               @endif
 
               <p>Schedule Date: <b>{{date('d M Y, H:i', strtotime($event_data->schedule_date))}}</b></p>
-              <p>{{$event_data->content}}</p>
+              <p>{!! $event_data->content !!}</p>
 <!--               <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button> -->
               <span class="pull-right text-muted">{{$event_data->post_like_count}} likes - {{$event_data->comment_count}} comments</span>
             </div>
@@ -96,6 +95,7 @@
                   <input type="text" id="add-comment-box" class="form-control input-sm" placeholder="{Add Comment Function}">
                 </div>
               </form> -->
+              <button type="button" class="btn btn-danger btn-flat btn-sm pull-right" id="btn-back">Back</button>
             </div>
             <!-- /.box-footer -->
           </div>
@@ -106,11 +106,14 @@
 @stop
 
 @section('js')
-    <script>
+  <script>
       // console.log('Hi!'); 
     	$( "#add-comment-box" ).prop( "disabled", true );
       // var _backendData = JSON.parse('{!! json_encode($comment_data) !!}');
       // console.log(_backendData);
+    $("#btn-back").on("click", function() {
+      window.location.replace("{{ url('admin/event/list') }}");
+    });
 	</script>
     
 @stop

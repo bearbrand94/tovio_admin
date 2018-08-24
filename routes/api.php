@@ -56,6 +56,7 @@ Route::post('/search', function (Request $request) {
 	}
 });
 
+
 //post service
 // Route::get('post', 'WebServices\PostService@index');
 Route::get('post/get', 'WebServices\PostService@get_post');

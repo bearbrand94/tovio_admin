@@ -17,6 +17,38 @@ class AdminController extends Controller
 		return view('eventList');
 	}
 
+	public function event_create(){
+		return view('eventCreate');
+	}
+
+    public function event_store(Request $request)
+    {
+        $title = $request->title;
+        $content = $request->content;
+        $schedule_date = $request->schedule_date;
+        $posted_by = $request->posted_by;
+
+        $post = new Post();
+        $post->title = $title;
+        $post->content = $content;
+        $post->schedule_date = Date('Y-m-d h:i:s',strtotime($schedule_date));
+        $posted_by != null ? $post->posted_by = $posted_by : $post->posted_by = Auth::id();
+        // $post->posted_by = Auth::id();
+
+        $contents = $request->file('post_image');
+        $path = Storage::disk('public')->put('posts', $contents);
+        if($path){
+            $post->original_image_url = $path;
+        }
+
+        $post->save();
+
+        return $this->createSuccessMessage($post);
+
+        // $post = Post::create($request->all());
+        // return response()->json($post, 201);
+    }
+
 	public function event_detail(Request $request){
 		$event_data = Post::get_post_by_id($request->post_id);
 		$comment_data = Comment::get_post_comment($request->post_id, 100);
