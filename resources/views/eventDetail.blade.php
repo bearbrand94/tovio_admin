@@ -38,7 +38,7 @@
               @if($event_data->original_image_url == "")
                 <img class="img-responsive pad" src="{{asset('img/photo2.png')}}" alt="Photo">
               @else
-                <img class="img-responsive pad" src="{{asset('storage/'.$event_data->original_image_url)}}" alt="Photo">
+                <img class="img-responsive pad" src="{{asset($event_data->original_image_url)}}" alt="Photo">
               @endif
 
               <p>Schedule Date: <b>{{date('d M Y, H:i', strtotime($event_data->schedule_date))}}</b></p>

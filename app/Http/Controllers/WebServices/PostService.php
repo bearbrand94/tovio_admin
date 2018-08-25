@@ -90,7 +90,7 @@ class PostService extends WebService
         $contents = $request->file('post_image');
         $path = Storage::disk('public')->put('posts', $contents);
         if($path){
-            $post->original_image_url = $path;
+            $post->original_image_url = "storage/app/public/" . $path;
         }
 
         $post->save();

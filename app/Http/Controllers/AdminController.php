@@ -35,10 +35,10 @@ class AdminController extends Controller
         $posted_by != null ? $post->posted_by = $posted_by : $post->posted_by = Auth::id();
         // $post->posted_by = Auth::id();
 
-        $contents = $request->file('post_image');
-        $path = Storage::disk('public')->put('posts', $contents);
+        $post_image = $request->file('post_image');
+        $path = Storage::disk('public')->put('posts', $post_image);
         if($path){
-            $post->original_image_url = $path;
+            $post->original_image_url = "storage/app/public/" . $path;
         }
 
         $post->save();

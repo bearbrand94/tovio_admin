@@ -42,7 +42,7 @@
                       <div class="input-group-addon">
                         <i class="fa fa-calendar"></i>
                       </div>
-                      <input type="text" class="form-control pull-right" id="datepicker schedule_date" name="schedule_date">
+                      <input type="text" class="form-control pull-right datepicker" id="schedule_date" name="schedule_date">
                     </div>
                   </div>
                   <div class="form-group">
@@ -70,20 +70,21 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-wysiwyg/0.3.3/bootstrap3-wysihtml5.css" />
 
 <!-- datepicker -->
-<link href="{!! asset('css/bootstrap-datepicker.css') !!}" media="all" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="{!! asset('js/bootstrap-datepicker.js') !!}"></script>
+<link href="{!! asset('public/css/bootstrap-datepicker.css') !!}" media="all" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{!! asset('public/js/bootstrap-datepicker.js') !!}"></script>
 
 <script>
-  $(function () {
+  $(document).ready(function() {
 
     //bootstrap WYSIHTML5 - text editor
     $('.textarea').wysihtml5();
 
     //Date picker
-    $('#datepicker').datepicker({
+    $('.datepicker').datepicker({
       autoclose: true
     })
-  })
+  });
+
   $('#create_event-form').on('submit',(function(e) {
       e.preventDefault();
       var form_data = new FormData(this);

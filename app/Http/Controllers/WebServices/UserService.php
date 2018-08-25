@@ -101,7 +101,7 @@ class UserService extends WebService
         $contents = $request->file('user_image');
         $path = Storage::disk('public')->put('users', $contents);
         if($path){
-            $new_user->original_image_url = $path;
+            $new_user->original_image_url = "storage/app/public/" . $path;
         }
 
 		$new_user->medium_image_url = $medium_image_url;
@@ -169,7 +169,7 @@ class UserService extends WebService
         $contents = $request->file('user_image');
         $path = Storage::disk('public')->put('users', $contents);
         if($path){
-            $new_user->original_image_url = $path;
+            $new_user->original_image_url = "storage/app/public/" . $path;
         }
 
 		$new_user->medium_image_url = $medium_image_url;
