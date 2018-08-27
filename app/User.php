@@ -67,10 +67,10 @@ class User extends Authenticatable
 
         $user = DB::table('users')
                 ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
-                    DB::raw('(select count(*) from posts where posted_by = "users"."id") as events_created'),
-                    DB::raw('(select count(*) from posts where posted_by = "users"."id" and is_completed=true) as events_completed'),
-                    DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
-                    DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+                    DB::raw('(select count(*) from posts where posted_by = $user_id) as events_created'),
+                    DB::raw('(select count(*) from posts where posted_by = $user_id and is_completed=true) as events_completed'),
+                    DB::raw('(select count(*) from networks where follower_id = $user_id) as following_count'),
+                    DB::raw('(select count(*) from networks where following_id = $user_id) as follower_count')
                 )
                 ->groupBy('users.id');
 
