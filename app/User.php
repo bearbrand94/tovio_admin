@@ -98,6 +98,17 @@ class User extends Authenticatable
         return $user_data;
     }
 
+    public static function getFollowData($user_id){
+        $follow_data['followed_by_me'] = DB::table('networks')
+        ->where('follower_id', Auth::id)
+        ->where('following_id', $user_id)
+        ->count();
+
+        $follow_data['following_me'] = DB::table('networks')
+        ->where('follower_id', $user_id)
+        ->where('following_id', Auth::id)
+        ->count();
+    }
 
     public static function  getUser_Searchy($page, $show, $keyword, $sort_type, $key_sort){
         $data = User::select('*');
