@@ -89,7 +89,7 @@
                     <td>{{$event->id}}</td>
                     <td><a href="<?php echo url('/admin/event/detail') ?>?post_id={{$event->id}}">{{$event->title}}</a></td>
                     <td>{{$event->schedule_date}}</td>
-                    @if ($event->is_completed === false)
+                    @if ($event->is_completed == 0)
                         <td class="text-center"><span class="label label-primary">Waiting</span></td>
                     @else
                         <td class="text-center"><span class="label label-success">Completed</span></td>
