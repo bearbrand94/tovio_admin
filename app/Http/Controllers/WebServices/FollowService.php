@@ -30,7 +30,12 @@ class FollowService extends WebService
         $follow_data['follower_id'] = $request->follower_id ? $request->follower_id : Auth::id();
         $follow_data['following_id'] = $request->following_id;
         $follow = Follow::create($follow_data);
-        return $this->createSuccessMessage($follow);
+
+        $return_data = [];
+        $return_data['user_data'] = User::getUserDetail($request->following_id);
+        $return_data['follow_data'] = User::getFollowData($request->following_id);
+
+        return $this->createSuccessMessage($return_data);
     }
 
     public function update(Request $request, $id)
@@ -50,11 +55,15 @@ class FollowService extends WebService
         $unfollow = Follow::where('follower_id', $follow_data['follower_id'])->where('following_id', $follow_data['following_id']);
         if($unfollow != null){
             $unfollow->delete();
+            $return_data = User::getUserDetail($request->following_id);
+            for ($i=0; $i < count($return_data) ; $i++) { 
+                $return_data[$i]->following_data = User::getFollowData($request->following_id);
+            }
+            return $this->createSuccessMessage($return_data);
         }
         else{
             $unfollow = "Not Found";
+            return $this->createSuccessMessage($unfollow);
         }
-
-        return $this->createSuccessMessage($unfollow);
     }
 }

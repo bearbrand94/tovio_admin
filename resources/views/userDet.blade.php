@@ -23,7 +23,7 @@
                 @if($user_data->original_image_url == "")
                 <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Image">
                 @else
-                <img class="img-circle" src="{{asset('storage/'.$user_data->original_image_url)}}" alt="User Image">
+                <img class="img-circle" src="{{asset($user_data->original_image_url)}}" alt="User Image">
                 @endif
             </div>
             <div class="box-footer">

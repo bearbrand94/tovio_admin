@@ -22,6 +22,14 @@ class UsersTableSeeder extends Seeder
         // will be too slow.
         $password = Hash::make('tovio');
 
+        $original_image_url = [
+            'storage/app/public/users/avatar1.png',
+            'storage/app/public/users/avatar2.png',
+            'storage/app/public/users/avatar3.png',
+            'storage/app/public/users/avatar4.png',
+            'storage/app/public/users/avatar5.png'
+        ];
+
         User::create([
             'email' => 'admin@test.com',
             'username' => 'admin',
@@ -37,6 +45,7 @@ class UsersTableSeeder extends Seeder
             'company' => $faker->company,
             'description' => $faker->sentence,
             'website' => $faker->domainName,
+            'original_image_url' => $original_image_url[$faker->numberBetween(0, 4)],
         ]);
         Follow::create([
             'follower_id' => 1,
@@ -60,6 +69,7 @@ class UsersTableSeeder extends Seeder
                 'company' => $faker->company,
                 'description' => $faker->sentence,
                 'website' => $faker->domainName,
+                'original_image_url' => $original_image_url[$faker->numberBetween(0, 4)],
             ]);
             Follow::create([
                 'follower_id' => $i+2,

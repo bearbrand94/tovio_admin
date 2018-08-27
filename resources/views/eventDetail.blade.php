@@ -18,7 +18,7 @@
                 @if($event_data->user_image_url == "")
                 <img class="img-circle" src="{{asset('img/avatar.png')}}" alt="User Image">
                 @else
-                <img class="img-circle" src="{{asset('storage/'.$event_data->user_image_url)}}" alt="User Image">
+                <img class="img-circle" src="{{asset($event_data->user_image_url)}}" alt="User Image">
                 @endif
 
                 <span class="username"><a href="<?php echo url('/admin/user/detail') ?>?user_id={{$event_data->posted_by}}" id="posted_by">{{$event_data->posted_by_name}}</a></span>
@@ -55,7 +55,7 @@
                 @if($comment->user_image_url == "")
                 <img class="img-circle img-sm" src="{{asset('img/avatar.png')}}" alt="User Image">
                 @else
-                <img class="img-circle img-sm" src="{{asset('storage/'.$comment->user_image_url)}}" alt="User Image">
+                <img class="img-circle img-sm" src="{{asset($comment->user_image_url)}}" alt="User Image">
                 @endif
 
                 <div class="comment-text">
@@ -71,7 +71,7 @@
                     @if($comment_child->user_image_url == "")
                     <img class="img-circle img-sm" src="{{asset('img/avatar.png')}}" alt="User Image">
                     @else
-                    <img class="img-circle img-sm" src="{{asset('storage/'.$comment_child->user_image_url)}}" alt="User Image">
+                    <img class="img-circle img-sm" src="{{asset($comment_child->user_image_url)}}" alt="User Image">
                     @endif
                     <div class="comment-text">
                           <span class="username">
