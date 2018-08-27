@@ -18,8 +18,8 @@ class UserController extends Controller
 
         $user = DB::table('users')
         		->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.telephone',
-        			DB::raw('(select count(*) from networks where follower_id = "users"."id") as following_count'),
-        			DB::raw('(select count(*) from networks where following_id = "users"."id") as follower_count')
+        			DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
+        			DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
         		)
         		->groupBy('users.id');
 

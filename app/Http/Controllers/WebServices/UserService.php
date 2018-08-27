@@ -188,7 +188,7 @@ class UserService extends WebService
         for ($i=0; $i < count($user); $i++) { 
         	$user[$i]->network = User::get_network($user[$i]->id);
         	$user[$i]->network_count = count($user[$i]->network);
-        	$user[$i]->network = User::getFollowData($user[$i]->id);
+        	$user[$i]->follow_data = User::getFollowData($user[$i]->id);
         }
         return $this->createSuccessMessage($user);
 	}

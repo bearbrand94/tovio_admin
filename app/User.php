@@ -50,10 +50,10 @@ class User extends Authenticatable
                 DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
                 DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
             )
-            ->where('username', 'ilike', '%' . $keyword . '%')
-            ->orWhere('email', 'ilike', '%' . $keyword . '%')
-            ->orWhere('first_name', 'ilike', '%' . $keyword . '%')
-            ->orWhere('last_name', 'ilike', '%' . $keyword . '%')
+            ->where('username', 'like', '%' . $keyword . '%')
+            ->orWhere('email', 'like', '%' . $keyword . '%')
+            ->orWhere('first_name', 'like', '%' . $keyword . '%')
+            ->orWhere('last_name', 'like', '%' . $keyword . '%')
             ->get();
 
         $slice = array_slice($user_data->toArray(), $paginate * ($page - 1), $paginate);
@@ -92,7 +92,7 @@ class User extends Authenticatable
                 DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
                 DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
             )
-            ->where('id', $user_id)
+            ->where('users.id', $user_id)
             ->groupBy('users.id')
             ->get();
         return $user_data;
@@ -100,14 +100,16 @@ class User extends Authenticatable
 
     public static function getFollowData($user_id){
         $follow_data['followed_by_me'] = DB::table('networks')
-        ->where('follower_id', Auth::id)
+        ->where('follower_id', Auth::id())
         ->where('following_id', $user_id)
         ->count();
 
         $follow_data['following_me'] = DB::table('networks')
         ->where('follower_id', $user_id)
-        ->where('following_id', Auth::id)
+        ->where('following_id', Auth::id())
         ->count();
+
+        return $follow_data;
     }
 
     public static function  getUser_Searchy($page, $show, $keyword, $sort_type, $key_sort){
