@@ -40,7 +40,11 @@ Route::post('/search', function (Request $request) {
 			return $post_data;
 			break;
 		case 'user':
-			return App\User::search_user($request->keyword, $page_show, $page);
+			$user_data = App\User::search_user($request->keyword, $page_show, $page);
+			for ($i=0; $i < count($user_data); $i++) { 
+				$user_data[$i]->follow_data = App\User::getFollowData($user[$i]->id);
+			}
+			return $user_data;
 			break;
 		case 'tag':
 			$tag_data = App\Post::search_tag($request->keyword, $page_show, $page);
