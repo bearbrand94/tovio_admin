@@ -26,8 +26,10 @@
               </div>
               <!-- /.user-block -->
               <div class="box-tools">
-<!--                 <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="Mark as read">
-                  <i class="fa fa-circle-o"></i></button> -->
+                <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="Delete">
+                  <i class="fa fa-trash-o"></i></button>
+                <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="Edit">
+                  <i class="fa fa-edit"></i></button>
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                 </button>
               </div>
@@ -43,7 +45,7 @@
 
               <p>Schedule Date: <b>{{date('d M Y, H:i', strtotime($event_data->schedule_date))}}</b></p>
               <p>{!! $event_data->content !!}</p>
-<!--               <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button> -->
+<!--               <button type="button" class="btn btn-default btn-xs" id="btn-like"><i class="fa fa-thumbs-o-up"></i> Like</button> -->
               <span class="pull-right text-muted">{{$event_data->post_like_count}} likes - {{$event_data->comment_count}} comments</span>
             </div>
             <!-- /.box-body -->
@@ -58,13 +60,14 @@
                 <img class="img-circle img-sm" src="{{asset($comment->user_image_url)}}" alt="User Image">
                 @endif
 
-                <div class="comment-text">
+                <div class="comment-text" style="margin-bottom: 10px;">
                       <span class="username">
                         <a href="<?php echo url('/admin/user/detail') ?>?user_id={{$comment->commented_by}}">{{$comment->commented_by_name}}</a>
                         <span class="text-muted pull-right">{{date('d M Y, H:i', strtotime($comment->created_at))}}</span>
                       </span><!-- /.username -->
-                      qwerty{{$comment->content}}
-                      {{$comment->child}}
+                      {{$comment->content}}
+                      <a href="#" class="text-muted text-light-blue pull-right"><u>Reply</u></a>
+                      <a href="#" class="text-muted text-light-blue pull-right" style="margin-right: 5px;"><u>Edit</u></a>
                 </div>
                 @foreach($comment->child as $comment_child)
                   <div class="box-comment" style="margin-left: 50px;">
@@ -85,16 +88,14 @@
               </div>
               <!-- /.box-comment -->
               @endforeach
+              <img class="img-responsive img-circle img-sm" src="{{asset($event_data->user_image_url)}}" alt="Alt Text">
+                <div class="img-push">
+                  <input type="text" id="add-comment-box" class="form-control input-sm" placeholder="Type new comment here">
+                </div>
             </div>
             <!-- /.box-footer -->
             <div class="box-footer">
-<!--               <form action="#" method="post">
-                <img class="img-responsive img-circle img-sm" src="{{asset('img/avatar.png')}}" alt="Alt Text">
-                .img-push is used to add margin to elements next to floating images
-                <div class="img-push">
-                  <input type="text" id="add-comment-box" class="form-control input-sm" placeholder="{Add Comment Function}">
-                </div>
-              </form> -->
+  
               <button type="button" class="btn btn-danger btn-flat btn-sm pull-right" id="btn-back">Back</button>
             </div>
             <!-- /.box-footer -->
@@ -108,12 +109,15 @@
 @section('js')
   <script>
       // console.log('Hi!'); 
-    	$( "#add-comment-box" ).prop( "disabled", true );
+    	// $( "#add-comment-box" ).prop( "disabled", true );
       // var _backendData = JSON.parse('{!! json_encode($comment_data) !!}');
       // console.log(_backendData);
     $("#btn-back").on("click", function() {
       window.location.replace("{{ url('admin/event/list') }}");
     });
+    // $("#btn-like").on("click", function() {
+    //   alert("Do Like");
+    // });
 	</script>
     
 @stop
