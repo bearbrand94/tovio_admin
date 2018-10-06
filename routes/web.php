@@ -48,6 +48,7 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('/admin/users', 'AdminController@user');
 	Route::get('/admin/user/detail', 'AdminController@user_detail');
+	Route::get('/admin/user/edit', 'AdminController@user_edit');
 
 	Route::get('/event/list', 'PostController@get_post');
 	Route::get('/user/list', 'UserController@get_user');

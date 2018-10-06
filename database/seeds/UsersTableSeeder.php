@@ -39,7 +39,7 @@ class UsersTableSeeder extends Seeder
             'telephone' => $faker->phoneNumber,
             'address' => $faker->address,
 
-            'gender' => 'male',
+            'gender' => '1',
             'birthday' => $faker->dateTimeBetween($startDate = '-30 years', $endDate = '-20 years'),
 
             'company' => $faker->company,
@@ -53,17 +53,17 @@ class UsersTableSeeder extends Seeder
         ]);
 
         // And now let's generate a few dozen users for our app:
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             User::create([
                 'email' => $faker->email,
-                'username' => $faker->userName,
+                'username' => $faker->unique()->userName,
                 'password' => $password,
                 'first_name' => $faker->firstName,
                 'last_name' => $faker->lastName,
                 'telephone' => $faker->phoneNumber,
                 'address' => $faker->address,
 
-                'gender' => $faker->randomElement($array = array ('male', 'female')),
+                'gender' => $faker->randomElement($array = array ('0', '1')),
                 'birthday' => $faker->dateTimeBetween($startDate = '-30 years', $endDate = '-20 years'),
 
                 'company' => $faker->company,

@@ -2,6 +2,9 @@
 
 use Illuminate\Database\Seeder;
 use App\Comment;
+use App\User;
+use App\Post;
+use App\Notifications\CommentCreated;
 
 class CommentsTableSeeder extends Seeder
 {
@@ -29,23 +32,30 @@ class CommentsTableSeeder extends Seeder
         
         for ($i = 1; $i < 500; $i++) {
             for ($j = 1; $j < $faker->numberBetween(0, 10); $j++) {
+                //create main comment
                 $comment = Comment::create([
                     'post_id' => $i,
                     'content' => $faker->sentence,
-                    'commented_by' => $faker->numberBetween(1, 11),
+                    'commented_by' => $faker->numberBetween(1, 300),
                     'comment_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
                     'parent_id' => 0,
                 ]);
                 $last_id = $comment->id;
 
+                $post_data = Post::get_post_by_id($comment->post_id);
+                $user_notif = User::find($post_data[0]->posted_by);
+                Notification::send($user_notif, new CommentCreated($comment));
+
+                //create child comment with chance of 0 to 10.
                 for ($j = 0; $j < $faker->numberBetween(0, 10); $j++) {
-                    Comment::create([
+                    $comment_child = Comment::create([
                         'post_id' => $i,
                         'content' => $faker->sentence,
-                        'commented_by' => $faker->numberBetween(1, 11),
+                        'commented_by' => $faker->numberBetween(1, 300),
                         'comment_date' => $faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now'),
                         'parent_id' => $last_id,
                     ]);
+                    Notification::send($user_notif, new CommentCreated($comment_child));
                 }
             }
         }

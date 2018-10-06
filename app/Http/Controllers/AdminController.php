@@ -81,4 +81,12 @@ class AdminController extends Controller
 			]
 		);
 	}
+
+	public function user_edit(Request $request){
+		return view('userEdit', 
+			[
+				'user_data' => User::getUserDetail($request->user_id)[0]
+			]
+		);
+	}
 }

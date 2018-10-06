@@ -24,8 +24,7 @@ class CommentService extends WebService
 
     public function get_comment(Request $request){
         // $request->page_show ? $request->page_show : $this->page_show;
-        
-        $comment['comment'] = Comment::find($request->comment_id)->paginate($this->page_show);
+        $comment['comment'] = Comment::find($request->comment_id);
         $comment['like_count'] = Like::where('reference_id', $request->comment_id)->where('table_name', 'comments')->count();
         $comment['liked_by_me'] = Like::where('reference_id', $request->comment_id)->where('user_id', $request->user_id)->where('table_name', 'comments')->count();       
         return $this->createSuccessMessage($comment);
@@ -71,8 +70,15 @@ class CommentService extends WebService
         $comment->parent_id = $parent_id;
 
         $comment->save();
+        $new_comment_data = Comment::get_comment_by_id($comment->id)[0];
 
-        return $this->createSuccessMessage($comment);
+        //create notification
+        $post_data = Post::get_post_by_id($post_id);
+        $user_notif = User::find($post_data[0]->posted_by);
+        Notification::send($user_notif, new CommentCreated($new_comment_data));
+
+        //return to API.
+        return $this->createSuccessMessage($new_comment_data);
     }
 
     public function update(Request $request)

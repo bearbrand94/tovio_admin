@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Illuminate\Support\Facades\Storage;
+use Validator;
 
 class PostService extends WebService
 {
@@ -80,22 +81,47 @@ class PostService extends WebService
         $schedule_date = $request->schedule_date;
         $posted_by = $request->posted_by;
 
+		$validator = Validator::make(
+			array(
+				"title"=>$title,
+				"content"=>$content,
+				"schedule_date"=>$schedule_date
+			),
+			array(
+				"title" => 'required|min:3',
+				"content" => 'required|min:3',
+				"schedule_date"=>'required'
+			)
+		);
+
+		if ($validator->fails()){
+			$messages = $validator->messages();
+			foreach ($messages->all() as $key => $value) {
+				return $result = $this->createErrorMessage($value, 400);
+			}
+		}
+		
         $post = new Post();
         $post->title = $title;
         $post->content = $content;
         $post->schedule_date = Date('Y-m-d h:i:s',strtotime($schedule_date));
         $posted_by != null ? $post->posted_by = $posted_by : $post->posted_by = Auth::id();
-        // $post->posted_by = Auth::id();
 
-        $contents = $request->file('post_image');
-        $path = Storage::disk('public')->put('posts', $contents);
-        if($path){
-            $post->original_image_url = "storage/app/public/" . $path;
-        }
-
+        $post->post_type = $request->post_type ? $request->post_type : 0;
+        
+        if($request->file('post_image')){
+            $contents = $request->file('post_image');
+            $path = Storage::disk('public')->put('posts', $contents);
+            if($path){
+                $post->original_image_url = "storage/app/public/" . $path;
+            }
+        };
+        
         $post->save();
-
-        return $this->createSuccessMessage($post);
+        
+        $new_post_data = Post::get_post_by_id($post->id)[0];
+        
+        return $this->createSuccessMessage($new_post_data);
 
         // $post = Post::create($request->all());
         // return response()->json($post, 201);
@@ -104,16 +130,20 @@ class PostService extends WebService
     public function update(Request $request)
     {
         $post = Post::find($request->post_id);
-
-        $contents = $request->file('post_image');
-        $path = Storage::disk('public')->put('posts', $contents);
-        if($path){
-            $post->original_image_url = $path;
-        }
+        
+        if($request->file('post_image')){
+            $contents = $request->file('post_image');
+            $path = Storage::disk('public')->put('posts', $contents);
+            if($path){
+                $post->original_image_url = $path;
+            }
+        };
         
         $post->update($request->all());
-
-        return $this->createSuccessMessage($post);
+        
+        $new_post_data = Post::get_post_by_id($post->id)[0];
+        
+        return $this->createSuccessMessage($new_post_data);
     }
 
     public function delete(Request $request)
@@ -135,5 +165,9 @@ class PostService extends WebService
         $data = $this->uploadS3($file,$category);
 
         return $this->createSuccessMessage($data);
+    }
+
+    public function invitePost(){
+
     }
 }

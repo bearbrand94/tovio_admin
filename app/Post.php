@@ -35,7 +35,7 @@ class Post extends Model
     }
 
     public static function search_post($keyword, $paginate=10, $page=1){
-        $post_data = DB::table('posts')
+        $post = DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
             ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
             ->where('title', 'like', '%' . $keyword . '%')
@@ -43,10 +43,14 @@ class Post extends Model
             ->orWhere('username', 'like', '%' . $keyword . '%')
             ->get();
 
-        $slice = array_slice($post_data->toArray(), $paginate * ($page - 1), $paginate);
-        $result = new LengthAwarePaginator($slice, count($post_data), $paginate);
+        $slice = array_slice($post->toArray(), $paginate * ($page - 1), $paginate);
+        $result = new LengthAwarePaginator($slice, count($post), $paginate);
 
-        // $result = new Paginator($slice, count($post_data), $paginate);
+        for ($i=0; $i < count($post); $i++) { 
+            $post[$i]->comment_count = Comment::where('post_id', $post[$i]->id)->count();
+            $post[$i]->post_like_count = Like::where('reference_id', $post[$i]->id)->where('table_name', 'posts')->count();
+            $post[$i]->post_liked_by_me = Like::where('reference_id', $post[$i]->id)->where('user_id', Auth::id())->where('table_name', 'posts')->count();    
+        }
         return $result;
     }
 

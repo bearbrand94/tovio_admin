@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 Use App\Post;
 Use App\Comment;
 Use App\Tag;
+Use App\Like;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
-class LikeService extends WebService
+class TagService extends WebService
 {
     public function index()
     {
@@ -24,6 +25,7 @@ class LikeService extends WebService
     public function store(Request $request)
     {
         $like = Like::create($request->all());
+
         return $this->createSuccessMessage($like);
     }
 

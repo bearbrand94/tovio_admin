@@ -22,7 +22,7 @@ class CreatePostsTable extends Migration
             $table->string('original_image_url')->nullable();
             $table->string('medium_image_url')->nullable();
             $table->string('thumbnail_image_url')->nullable();
-            
+            $table->integer('post_type')->default(0); // 0=private post; 1=public post
             $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });

@@ -41,19 +41,23 @@ class User extends Authenticatable
             ->get();
         return $user_data;
     }
-
-    public static function search_user($keyword, $paginate=10, $page=1){
+    
+    public static function select_user(){
         $user_data = DB::table('users')
             ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.address', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
                 DB::raw('(select count(*) from posts where posted_by = users.id) as events_created'),
                 DB::raw('(select count(*) from posts where posted_by = users.id and is_completed=true) as events_completed'),
                 DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
                 DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
-            )
+            );
+        return $user_data;
+    }
+    
+    public static function search_user($keyword, $paginate=10, $page=1){
+        $user_data = User::select_user();
+        $user_data = $user_data->where('id', '!=' , Auth::id())
             ->where('username', 'like', '%' . $keyword . '%')
-            ->orWhere('email', 'like', '%' . $keyword . '%')
-            ->orWhere('first_name', 'like', '%' . $keyword . '%')
-            ->orWhere('last_name', 'like', '%' . $keyword . '%')
+
             ->get();
 
         $slice = array_slice($user_data->toArray(), $paginate * ($page - 1), $paginate);
@@ -65,15 +69,7 @@ class User extends Authenticatable
     {
         // return Datatables::of(User::query())->make(true);
 
-        $user = DB::table('users')
-                ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
-                    DB::raw('(select count(*) from posts where posted_by = users.id) as events_created'),
-                    DB::raw('(select count(*) from posts where posted_by = users.id and is_completed=true) as events_completed'),
-                    DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
-                    DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
-                )
-                ->groupBy('users.id');
-
+        $user = User::select_user();
         if($show>0){
             $user = $user->paginate($show);
         }
@@ -85,16 +81,15 @@ class User extends Authenticatable
     }
 
     public static function getUserDetail($user_id){
-        $user_data = DB::table('users')
-            ->select('users.id', 'users.email', 'users.username', 'users.first_name', 'users.last_name','users.telephone', 'users.website', 'users.company', 'users.gender', 'users.birthday', 'users.description', 'users.original_image_url', 'users.medium_image_url', 'users.thumbnail_image_url',
-                DB::raw('(select count(*) from posts where posted_by = users.id) as events_created'),
-                DB::raw('(select count(*) from posts where posted_by = users.id and is_completed=true) as events_completed'),
-                DB::raw('(select count(*) from networks where follower_id = users.id) as following_count'),
-                DB::raw('(select count(*) from networks where following_id = users.id) as follower_count')
-            )
-            ->where('users.id', $user_id)
+        $user_data = User::select_user();
+        $user_data = $user_data->where('users.id', $user_id)
             ->groupBy('users.id')
             ->get();
+        for ($i=0; $i < count($user_data); $i++) { 
+        	$user_data[$i]->network = User::get_network($user_data[$i]->id);
+        	$user_data[$i]->network_count = count($user_data[$i]->network);
+        	$user_data[$i]->follow_data = User::getFollowData($user_data[$i]->id);
+        }
         return $user_data;
     }
 
@@ -110,78 +105,6 @@ class User extends Authenticatable
         ->count();
 
         return $follow_data;
-    }
-
-    public static function  getUser_Searchy($page, $show, $keyword, $sort_type, $key_sort){
-        $data = User::select('*');
-
-        if($keyword){
-            if (env('DB_CONNECTION')=='mysql') {
-                /* CONNECTION MYSQL */
-                $temp = Searchy::users('first_name','last_name','username','email')->query($keyword)
-                                ->getQuery();
-                if(!$key_sort){
-                    $temp = $temp->skip($page*$show)->take($show)->get();
-                }else{
-                    $temp = $temp->get();
-                }
-                $t = [];
-                foreach ($temp as $key => $value) {
-                    $t[] = $value->id;
-                }
-                if (count($t)<1) {
-                    return null;
-                }
-                if($key_sort){
-                    $data = $data->whereIn('users.id',$t)
-                                ->orderBy($key_sort,$sort_type);
-                }else{
-                    $data = $data->whereIn('users.id',$t)
-                        ->orderByRaw("field(users.id," . implode(',', $t) . ")");
-                    }
-            }else if (env('DB_CONNECTION')=='pgsql') {
-                /* CONNECTION PGSQL */
-                $temp2 = Searchy::users('first_name','last_name','username','email')->query($keyword)
-                                    ->getQuery()->toSql();
-                $temp = DB::table( DB::raw("(". $temp2 .") as qq") )->select('id','relevance')
-                            ->where('qq.relevance','>',0);
-                if(!$key_sort){
-                    $temp = $temp->skip($page*$show)->take($show)->get();
-                }else{
-                    $temp = $temp->get();
-                }
-                $t = [];
-                foreach ($temp as $key => $value) {
-                    $t[] = $value->id;
-                }
-                if (count($t)<1) {
-                    return null;
-                }
-                if($key_sort){
-                    $data = $data->whereIn('users.id',$t)
-                                ->orderBy($key_sort,$sort_type);
-                }else{
-                    $data = $data->whereIn('users.id',$t)
-                    ->orderByRaw("array_position(array[" . implode(',', $t) ."],users.id)");
-                }
-            }
-
-        }
-        $count = $data;
-        $count = count($data->get());
-        $data = $data->skip($page*$show)
-                    ->take($show);
-
-        if($key_sort){
-            $data = $data->orderBy($key_sort,$sort_type);
-        }else{
-            $data = $data->orderBy('created_at','desc');
-        }
-        $data = $data->get();
-
-        $output['data']=$data;
-        $output['count']=$count;
-        return $output;
     }
 
     public function followers()

@@ -16,7 +16,14 @@ class UserService extends WebService
 {
 
 	public function searchUser(Request $request){
-		return $this->createSuccessMessage(User::search_user($request->keyword));
+		$user_data = User::search_user($request->keyword);
+		
+		for ($i=0; $i < count($user_data); $i++) {
+        	$user_data[$i]->network = User::get_network($user_data[$i]->id);
+        	$user_data[$i]->network_count = count($user_data[$i]->network);
+			$user_data[$i]->follow_data = User::getFollowData($user_data[$i]->id);
+		}
+		return $this->createSuccessMessage($user_data);
 	}
 
     public function signIn(Request $request) {
@@ -30,9 +37,17 @@ class UserService extends WebService
 
         if (Auth::attempt(array('username' => $username, 'password' => $password),true))
         {
-        	$user = [];
-            $user['data_auth'] = Auth::user();
-            return $this->createSuccessMessage($user);
+        // 	$user = [];
+        //     $user['data_auth'] = Auth::user();
+        //     return $this->createSuccessMessage($user);
+        	$data = [];
+    
+        	if (Auth::user()) {
+        	    $data_auth = Auth::user();
+                $data['user'] = User::getUserDetail($data_auth->id);
+            }
+    
+            return $this->createSuccessMessage($data);
         }
         return $this->createErrorMessage('Username atau password anda salah', 400);
 	}
@@ -48,7 +63,11 @@ class UserService extends WebService
 		$address = $request->address;
 
 		$gender = $request->gender;
-		$birthday = $request->birthday;
+		$birthday = null;
+		if($request->birthday ){
+		    $birthday = Date('Y-m-d h:i:s',strtotime($request->birthday));
+		};
+		
 		$company = $request->company;
 		$description = $request->description;
 		$website = $request->website;
@@ -64,7 +83,6 @@ class UserService extends WebService
 				"last_name"=>$last_name,
 				"email"=>$email,
 				"password"=>$password,
-				"telephone"=>$telephone,
 				"username"=>$username
 			),
 			array(
@@ -72,8 +90,8 @@ class UserService extends WebService
 				"last_name" => 'required|min:3',
 				"email"=>'required|min:3|email|unique:users,email',
 				"password" => 'required|min:3',
-				"username" => 'required|min:3|unique:users,username',
-				"telephone" => 'required|min:10|max:13|unique:users,telephone')
+				"username" => 'required|min:3|unique:users,username'
+			)
 		);
 
 		if ($validator->fails()){
@@ -84,6 +102,7 @@ class UserService extends WebService
 		}
 
 		$new_user = new User();
+		$new_user->username = $username;
 		$new_user->first_name = $first_name;
 		$new_user->last_name = $last_name;
 		$new_user->email = $email;
@@ -97,11 +116,13 @@ class UserService extends WebService
 		$new_user->company = $company;
 		$new_user->description = $description;
 		$new_user->website = $website;
-
-        $contents = $request->file('user_image');
-        $path = Storage::disk('public')->put('users', $contents);
-        if($path){
-            $new_user->original_image_url = "storage/app/public/" . $path;
+        
+        if($request->file('user_image')){
+            $contents = $request->file('user_image');
+            $path = Storage::disk('public')->put('users', $contents);
+            if($path){
+                $new_user->original_image_url = "storage/app/public/" . $path;
+            }
         }
 
 		$new_user->medium_image_url = $medium_image_url;
@@ -111,10 +132,11 @@ class UserService extends WebService
     	$new_user->save();
 		if (Auth::attempt(array('username' => $username, 'password' => $password),true))
         {
-            $user = Auth::user();
+    	    $data_auth = Auth::user();
+            $data['user'] = User::getUserDetail($data_auth->id);
         }
 
-		return $this->createSuccessMessage($new_user);
+		return $this->createSuccessMessage($data);
 	}
 
 	public function signOut(Request $request) {
@@ -137,7 +159,7 @@ class UserService extends WebService
 		$address = $request->address;
 
 		$gender = $request->gender;
-		$birthday = $request->birthday;
+		$birthday = Date('Y-m-d h:i:s',strtotime($request->birthday));
 		$company = $request->company;
 		$description = $request->description;
 		$website = $request->website;
@@ -153,6 +175,7 @@ class UserService extends WebService
 			return $this->createErrorMessage('user not found',400);
 		}
 
+		$username ? $new_user->username = $username : $new_user->username;
 		$first_name ? $new_user->first_name = $first_name : $new_user->first_name;
 		$last_name ? $new_user->last_name = $last_name : $new_user->last_name;
 		// $new_user->email = $email;
@@ -166,10 +189,12 @@ class UserService extends WebService
 		$description ? $new_user->description = $description : $new_user->description;
 		$website ? $new_user->website = $website : $new_user->website;
 
-        $contents = $request->file('user_image');
-        $path = Storage::disk('public')->put('users', $contents);
-        if($path){
-            $new_user->original_image_url = "storage/app/public/" . $path;
+        if($request->file('user_image')){
+            $contents = $request->file('user_image');
+            $path = Storage::disk('public')->put('users', $contents);
+            if($path){
+                $new_user->original_image_url = "storage/app/public/" . $path;
+            }
         }
 
 		$new_user->medium_image_url = $medium_image_url;
@@ -177,8 +202,8 @@ class UserService extends WebService
 		$new_user->keterangan = $keterangan;
 		
 		$new_user->save();
-
-		return $this->createSuccessMessage($new_user);
+        $user_data = User::getUserDetail($new_user->id);
+		return $this->createSuccessMessage($user_data);
 	}
 
 	public function get_user_list(Request $request){
@@ -186,9 +211,7 @@ class UserService extends WebService
 		$request->page_show ? $page_show=$request->page_show : $page_show=0;
         $user = User::get_user_list($page_show);
         for ($i=0; $i < count($user); $i++) { 
-        	$user[$i]->network = User::get_network($user[$i]->id);
-        	$user[$i]->network_count = count($user[$i]->network);
-        	$user[$i]->follow_data = User::getFollowData($user[$i]->id);
+        	$user[$i] = User::getUserDetail($user[$i]->id);
         }
         return $this->createSuccessMessage($user);
 	}
@@ -211,6 +234,7 @@ class UserService extends WebService
 
     	if (Auth::user()) {
             $data['user'] = Auth::user();
+        	$data['user'] = User::getUserDetail($data['user']->id);
         }
 
         return $this->createSuccessMessage($data);
