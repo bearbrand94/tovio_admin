@@ -17,19 +17,6 @@ class PostService extends WebService
 {
     public $page_show;
 
-
-    public function get_picture(Request $request)
-    {
-        $contents = Storage::get('posts/WkQDFCtmcPv5wUDnqPClmI2fWnQ00QEiH9NbzCu4.jpeg');
-        return $contents;
-    }
-
-    public function upload_picture(Request $request)
-    {
-        $path = $request->file('post_image')->store('public/posts');
-        return $path;
-    }
-
     public function index()
     {
         return $this->createSuccessMessage(Post::all());
@@ -63,7 +50,6 @@ class PostService extends WebService
         $request = $this->process_request_data($request);
 
         $post = Post::get_network_post($request->date_start, $request->date_end, $request->page_show);
-
         return $this->createSuccessMessage($post);
     }
 

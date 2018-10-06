@@ -35,6 +35,7 @@ class PostsTableSeeder extends Seeder
                 'posted_by' => $user_id,
                 'schedule_date' => $faker->dateTimeBetween($startDate = 'now', $endDate = '+1 years'),
                 'is_completed' => $faker->boolean($chanceOfGettingTrue = 50),
+                'post_type' => $faker->randomElement($array = array ('0', '1')),
                 'original_image_url' => $original_image_url[$faker->numberBetween(0, 3)],
             ]);
             // $user = User::find($user_id);

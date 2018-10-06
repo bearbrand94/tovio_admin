@@ -15,6 +15,14 @@ class Post extends Model
         'created_at', 'updated_at',
     ];
 
+    private static function select_post(){
+        $post = DB::table('posts')
+                ->join('users', 'users.id', '=', 'posts.posted_by')
+                ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
+                ->where('posts.post_type', 0);
+        return $post;
+    }
+
     public static function search_tag($keyword, $paginate=10, $page=1){
         $post_data = DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
@@ -35,10 +43,8 @@ class Post extends Model
     }
 
     public static function search_post($keyword, $paginate=10, $page=1){
-        $post = DB::table('posts')
-                    ->join('users', 'users.id', '=', 'posts.posted_by')
-            ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
-            ->where('title', 'like', '%' . $keyword . '%')
+        $post = Post::select_post();
+        $post = $post->where('title', 'like', '%' . $keyword . '%')
             ->orWhere('first_name', 'like', '%' . $keyword . '%')
             ->orWhere('username', 'like', '%' . $keyword . '%')
             ->get();
@@ -55,9 +61,7 @@ class Post extends Model
     }
 
     public static function get_post($date_start = null, $date_end = null, $page_show = 10){
-        $post =  DB::table('posts')
-                    ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
+        $post = Post::select_post();
         if($date_start){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $post = $post->where('schedule_date', '>', $date_start);
@@ -80,9 +84,8 @@ class Post extends Model
     }
 
     public static function get_user_post($date_start = null, $date_end = null, $page_show = 10, $user_id){
-        $post =  DB::table('posts')
-                    ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')->where('posts.posted_by', $user_id);
+        $post = Post::select_post();
+        $post = $post->where('posts.posted_by', $user_id);
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
@@ -102,11 +105,10 @@ class Post extends Model
     }
 
     public static function get_network_post($date_start = null, $date_end = null, $page_show = 10){
-        $post =  DB::table('networks')
-                    ->join('posts', 'networks.following_id', '=', 'posts.posted_by')
-                    ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->where('networks.follower_id', '=',  Auth::id())
-                    ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
+        $post = Post::select_post();
+        $post = $post->join('networks', 'networks.following_id', '=', 'posts.posted_by')
+                    ->where('networks.follower_id', '=',  Auth::id());
+
         if($date_start && $date_end){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
             $date_end = Date('Y-m-d h:i:s',strtotime($date_end));
