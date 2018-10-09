@@ -90,6 +90,9 @@ Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');
 Route::post('post/delete', 'WebServices\PostService@delete');
 
+// post invitation
+Route::post('post/invite', 'WebServices\PostService@invite');
+
 //comment service
 Route::get('comment/get', 'WebServices\CommentService@get_comment');
 Route::get('comment/post_comment', 'WebServices\CommentService@get_post_comment');

@@ -7,11 +7,16 @@ Use App\User;
 Use App\Post;
 Use App\Comment;
 Use App\Like;
+Use App\PostInvitation;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Illuminate\Support\Facades\Storage;
 use Validator;
+
+//notification
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\InvitationCreated;
 
 class PostService extends WebService
 {
@@ -144,16 +149,50 @@ class PostService extends WebService
         return $this->createSuccessMessage($post);
     }
 
-    public function uploadPicture(Request $request){        
-        $file = $request->file;
-        $category = $request->category ? $request->category : "post";
-
-        $data = $this->uploadS3($file,$category);
-
-        return $this->createSuccessMessage($data);
+    public function upload_picture(Request $request)
+    {
+        $original_image_url="";
+        if($request->file('post_image')){
+            $contents = $request->file('post_image');
+            $path = Storage::disk('public')->put('posts', $contents);
+            if($path){
+                $original_image_url = "storage/app/public/" . $path;
+            }
+        };
+        return $original_image_url;
     }
 
-    public function invitePost(){
+    public function invite(Request $request){
+        $post_id = $request->post_id;
+        $user_id = $request->user_id;
+        // $invitation_answer = $request->invitation_answer ? 0;
 
+        $validator = Validator::make(
+            array(
+                "post_id"=>$post_id,
+                "user_id"=>$user_id
+            ),
+            array(
+                "post_id" => 'required',
+                "user_id" => 'required'
+            )
+        );
+
+        if ($validator->fails()){
+            $messages = $validator->messages();
+            foreach ($messages->all() as $key => $value) {
+                return $result = $this->createErrorMessage($value, 400);
+            }
+        }
+        
+        $post_invitation = new PostInvitation();
+        $post_invitation->post_id = $post_id;
+        $post_invitation->user_id = $user_id;
+        $post_invitation->save();
+        
+        $user_notif = User::find($user_id);
+        Notification::send($user_notif, new InvitationCreated($post_invitation));
+
+        return $this->createSuccessMessage($post_invitation);
     }
 }

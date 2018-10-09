@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\WebServices;
 
 use Illuminate\Http\Request;
+Use App\User;
 Use App\Post;
 Use App\Comment;
 Use App\Like;
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CommentCreated;
 
 class CommentService extends WebService
 {
@@ -75,7 +79,8 @@ class CommentService extends WebService
         //create notification
         $post_data = Post::get_post_by_id($post_id);
         $user_notif = User::find($post_data[0]->posted_by);
-        Notification::send($user_notif, new CommentCreated($new_comment_data));
+
+        Notification::send($user_notif, new CommentCreated($comment));
 
         //return to API.
         return $this->createSuccessMessage($new_comment_data);

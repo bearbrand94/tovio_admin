@@ -19,8 +19,15 @@ class InvitationService extends WebService
 
     public function upload_picture(Request $request)
     {
-        $path = $request->file('post_image')->store('public/posts');
-        return $path;
+        $original_image_url="";
+        if($request->file('post_image')){
+            $contents = $request->file('post_image');
+            $path = Storage::disk('public')->put('posts', $contents);
+            if($path){
+                $original_image_url = "storage/app/public/" . $path;
+            }
+        };
+        return $original_image_url;
     }
 
     public function index()
