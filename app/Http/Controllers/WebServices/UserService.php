@@ -202,7 +202,7 @@ class UserService extends WebService
 		$new_user->keterangan = $keterangan;
 		
 		$new_user->save();
-        $user_data = User::getUserDetail($new_user->id);
+        $user_data = User::getUserDetail($new_user->id)[0];
 		return $this->createSuccessMessage($user_data);
 	}
 
