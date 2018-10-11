@@ -19,7 +19,20 @@ class Post extends Model
         $post = DB::table('posts')
                 ->join('users', 'users.id', '=', 'posts.posted_by')
                 ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
-                ->where('posts.post_type', 0);
+                
+                //WHERE ((post_type=0)
+                //Select posts if the post is public.
+
+                // OR (post_type=1 AND posted_by=Auth::id()))
+                //OR if the post is private, but the current logged-in user owns that post.
+
+                ->where(function ($query) {
+                    $query->where('posts.post_type', 0)
+                          ->orWhere(function($query) {
+                            $query->where('posts.post_type', 1)
+                                  ->where('posts.posted_by', Auth::id());
+                            });
+                });
         return $post;
     }
 
