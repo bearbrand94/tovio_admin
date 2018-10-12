@@ -195,4 +195,8 @@ class PostService extends WebService
 
         return $this->createSuccessMessage($post_invitation);
     }
+
+    public function get_post_invitation(Request $request){
+        return $this->createSuccessMessage(PostInvitation::get_post_invitation($request->post_id));
+    }
 }

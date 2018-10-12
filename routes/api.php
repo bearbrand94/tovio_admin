@@ -92,6 +92,7 @@ Route::post('post/delete', 'WebServices\PostService@delete');
 
 // post invitation
 Route::post('post/invite', 'WebServices\PostService@invite');
+Route::post('post/invite/get', 'WebServices\PostService@get_post_invitation');
 
 //comment service
 Route::get('comment/get', 'WebServices\CommentService@get_comment');
