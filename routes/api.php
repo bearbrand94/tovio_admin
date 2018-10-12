@@ -127,6 +127,11 @@ Route::post('user/edit','WebServices\UserService@editUserProfile');
 Route::post('user/get_user_detail','WebServices\UserService@getUserDetail');
 Route::post('user/sign_out','WebServices\UserService@signOut');
 
+// Notification things
+Route::post('user/notification/read','WebServices\UserService@readNotification');
+Route::post('user/notification/readAll','WebServices\UserService@readAllNotification');
+Route::get('user/notification/get','WebServices\UserService@getNotification');
+
 /*Upload Picture*/
 Route::post('user/upload_picture','WebServices\UserService@uploadPicture');
 

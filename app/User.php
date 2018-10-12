@@ -34,6 +34,19 @@ class User extends Authenticatable
 
     protected $table = "users";
 
+    public static function current_user_data(){
+        $data = [];
+        $user = Auth::user();
+        $data['user'] = User::getUserDetail($user->id);
+        $data['unread_notifications']=[];
+        foreach ($user->notifications as $notification) {
+            if($notification->read_at == null){
+                array_push($data['unread_notifications'], $notification);
+            }
+        }
+        return $data;
+    }
+
     public static function testSearchy($keyword){
         $user_data = DB::table('users')
             ->where('username', 'like', '%' . $keyword . '%')

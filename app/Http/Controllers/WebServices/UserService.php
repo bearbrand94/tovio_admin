@@ -43,8 +43,12 @@ class UserService extends WebService
         	$data = [];
     
         	if (Auth::user()) {
-        	    $data_auth = Auth::user();
-                $data['user'] = User::getUserDetail($data_auth->id);
+	            $user = Auth::user();
+	        	$data['user'] = User::getUserDetail($user->id);
+	        	$data['notification']=[];
+	        	foreach ($user->notifications as $notification) {
+				    array_push($data['notification'], $notification);
+				}
             }
     
             return $this->createSuccessMessage($data);
@@ -132,8 +136,12 @@ class UserService extends WebService
     	$new_user->save();
 		if (Auth::attempt(array('username' => $username, 'password' => $password),true))
         {
-    	    $data_auth = Auth::user();
-            $data['user'] = User::getUserDetail($data_auth->id);
+            $user = Auth::user();
+        	$data['user'] = User::getUserDetail($user->id);
+        	$data['notification']=[];
+        	foreach ($user->notifications as $notification) {
+			    array_push($data['notification'], $notification);
+			}
         }
 
 		return $this->createSuccessMessage($data);
@@ -230,14 +238,31 @@ class UserService extends WebService
     }
 
     public function initialData(Request $request){
-    	$data = [];
-
-    	if (Auth::user()) {
-            $data['user'] = Auth::user();
-        	$data['user'] = User::getUserDetail($data['user']->id);
-        }
-
-        return $this->createSuccessMessage($data);
+        return $this->createSuccessMessage(User::current_user_data());
     }
 
+    public function readNotification(Request $request){
+    	$user = Auth::user();
+		foreach ($user->unreadNotifications as $notification) {
+			if($notification->id == $request->notification_id){
+				$notification->markAsRead();
+			}
+		}
+		return $this->createSuccessMessage(User::current_user_data());
+    }
+
+    public function readAllNotification(Request $request){
+    	$user = Auth::user();
+		$user->unreadNotifications->markAsRead();
+		return $this->createSuccessMessage(User::current_user_data());
+    }
+
+    public function getNotification(Request $request){
+    	$user = Auth::user();
+    	$data['notification'] = [];
+    	foreach ($user->notifications as $notification) {
+		    array_push($data['notification'], $notification);
+		}
+		return $this->createSuccessMessage($data);
+    }
 }
