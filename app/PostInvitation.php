@@ -19,7 +19,8 @@ class PostInvitation extends Model
         $invitation_list = DB::table('post_invitation')
                 ->join('users', 'users.id', '=', 'post_invitation.user_id')
                 ->select('post_invitation.*', 'users.username')
-                ->where('post_invitation.post_id', $post_id);
+                ->where('post_invitation.post_id', $post_id)
+                ->get();
         return $invitation_list;
     }
 }
