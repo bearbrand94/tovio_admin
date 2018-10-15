@@ -20,10 +20,10 @@ class PostsTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         $original_image_url = [
-            'storage/app/public/posts/photo1.png',
-            'storage/app/public/posts/photo2.png',
-            'storage/app/public/posts/photo3.jpg',
-            'storage/app/public/posts/photo4.jpg'
+            url('storage/app/public/posts/photo1.png'),
+            url('storage/app/public/posts/photo2.png'),
+            url('storage/app/public/posts/photo3.jpg'),
+            url('storage/app/public/posts/photo4.jpg')
         ];
         
         // And now, let's create a few articles in our database:

@@ -23,11 +23,11 @@ class UsersTableSeeder extends Seeder
         $password = Hash::make('tovio');
 
         $original_image_url = [
-            'storage/app/public/users/avatar1.png',
-            'storage/app/public/users/avatar2.png',
-            'storage/app/public/users/avatar3.png',
-            'storage/app/public/users/avatar4.png',
-            'storage/app/public/users/avatar5.png'
+            url('storage/app/public/users/avatar1.png'),
+            url('storage/app/public/users/avatar2.png'),
+            url('storage/app/public/users/avatar3.png'),
+            url('storage/app/public/users/avatar4.png'),
+            url('storage/app/public/users/avatar5.png')
         ];
 
         User::create([
