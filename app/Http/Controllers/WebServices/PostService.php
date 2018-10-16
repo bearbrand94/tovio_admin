@@ -100,13 +100,19 @@ class PostService extends WebService
 
         $post->post_type = $request->post_type ? $request->post_type : 0;
         
-        if($request->file('post_image')){
-            $contents = $request->file('post_image');
-            $path = Storage::disk('public')->put('posts', $contents);
-            if($path){
-                $post->original_image_url = "storage/app/public/" . $path;
-            }
+        if($requests->image_url){
+
+        }
+        else{
+            if($request->file('post_image')){
+                $contents = $request->file('post_image');
+                $path = Storage::disk('public')->put('posts', $contents);
+                if($path){
+                    $post->original_image_url = url("storage/app/public/") . "/" . $path;
+                }
+            };  
         };
+
         
         $post->save();
         
@@ -126,7 +132,7 @@ class PostService extends WebService
             $contents = $request->file('post_image');
             $path = Storage::disk('public')->put('posts', $contents);
             if($path){
-                $post->original_image_url = $path;
+                $post->original_image_url = url("storage/app/public/") . "/" . $path;
             }
         };
         
@@ -156,7 +162,7 @@ class PostService extends WebService
             $contents = $request->file('post_image');
             $path = Storage::disk('public')->put('posts', $contents);
             if($path){
-                $original_image_url = "storage/app/public/" . $path;
+                $original_image_url = url("storage/app/public/") . "/" . $path;
             }
         };
         return $original_image_url;

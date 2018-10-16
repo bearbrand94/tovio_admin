@@ -62,7 +62,7 @@ class CommentService extends WebService
         $post_id = $request->post_id;
         $content = $request->content;
         $commented_by = $request->commented_by;
-        $comment_date = $request->comment_date;
+        $comment_date = $request->comment_date ? $request->comment_date : now();
         $parent_id = $request->parent_id ? $request->parent_id : 0;
 
 

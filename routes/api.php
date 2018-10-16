@@ -54,7 +54,9 @@ Route::post('/search', function (Request $request) {
 				$post_data[$i]->user_data = App\User::getUserDetail($post_data[$i]->posted_by);
 				$post_data[$i]->follow_data = App\User::getFollowData($post_data[$i]->posted_by);
 			}
-			return createSuccessMessage($post_data);
+			$custom = collect(['search_type' => 'post']);
+			$data = $custom->merge($post_data);
+			return createSuccessMessage($data);
 			break;
 		case 'user':
 			$user_data = App\User::search_user($request->keyword, $page_show, $page);
@@ -63,7 +65,9 @@ Route::post('/search', function (Request $request) {
             	$user_data[$i]->network_count = count($user_data[$i]->network);
 				$user_data[$i]->follow_data = App\User::getFollowData($user_data[$i]->id);
 			}
-			return createSuccessMessage($user_data);
+			$custom = collect(['search_type' => 'user']);
+			$data = $custom->merge($user_data);
+			return createSuccessMessage($data);
 			break;
 		case 'tag':
 			$tag_data = App\Post::search_tag($request->keyword, $page_show, $page);
@@ -71,7 +75,9 @@ Route::post('/search', function (Request $request) {
 				$tag_data[$i]->user_data = App\User::getUserDetail($tag_data[$i]->user_id);
 				$tag_data[$i]->follow_data = App\User::getFollowData($tag_data[$i]->user_id);
 			}
-			return createSuccessMessage($tag_data);
+			$custom = collect(['search_type' => 'tag']);
+			$data = $custom->merge($tag_data);
+			return createSuccessMessage($data);
 			break;
 				
 		default:
