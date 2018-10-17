@@ -43,12 +43,7 @@ class UserService extends WebService
         	$data = [];
     
         	if (Auth::user()) {
-	            $user = Auth::user();
-	        	$data['user'] = User::getUserDetail($user->id);
-	        	$data['notification']=[];
-	        	foreach ($user->notifications as $notification) {
-				    array_push($data['notification'], $notification);
-				}
+	        	$data = User::current_user_data();
             }
     
             return $this->createSuccessMessage($data);
@@ -136,12 +131,7 @@ class UserService extends WebService
     	$new_user->save();
 		if (Auth::attempt(array('username' => $username, 'password' => $password),true))
         {
-            $user = Auth::user();
-        	$data['user'] = User::getUserDetail($user->id);
-        	$data['notification']=[];
-        	foreach ($user->notifications as $notification) {
-			    array_push($data['notification'], $notification);
-			}
+            $data = User::current_user_data();
         }
 
 		return $this->createSuccessMessage($data);

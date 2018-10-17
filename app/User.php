@@ -44,6 +44,7 @@ class User extends Authenticatable
                 array_push($data['unread_notifications'], $notification);
             }
         }
+        $data['template_url'] = "";
         return $data;
     }
 
@@ -134,7 +135,7 @@ class User extends Authenticatable
     public static function get_network($user_id){
         $results = DB::select( DB::raw("
             SELECT follower_id
-            FROM networks 
+            FROM networks
             WHERE following_id = :user_id1 AND follower_id IN(
                 SELECT following_id
                 FROM networks
@@ -144,7 +145,9 @@ class User extends Authenticatable
            'user_id1' => $user_id,
            'user_id2' => $user_id,
         ));
-
+        for($i=0; $i<count($results); $i++){
+            $results[$i]->follower_detail = User::select_user()->where('id',$results[$i]->follower_id)->get();
+        }
         return $results;
     }
 }
