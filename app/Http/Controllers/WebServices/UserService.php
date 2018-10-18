@@ -120,7 +120,7 @@ class UserService extends WebService
             $contents = $request->file('user_image');
             $path = Storage::disk('public')->put('users', $contents);
             if($path){
-                $new_user->original_image_url = "storage/app/public/" . $path;
+                $new_user->original_image_url = url("storage/app/public/") . "/" . $path;
             }
         }
 
@@ -191,7 +191,7 @@ class UserService extends WebService
             $contents = $request->file('user_image');
             $path = Storage::disk('public')->put('users', $contents);
             if($path){
-                $new_user->original_image_url = "storage/app/public/" . $path;
+                $new_user->original_image_url = url("storage/app/public/") . "/" . $path;
             }
         }
 
@@ -228,7 +228,12 @@ class UserService extends WebService
     }
 
     public function initialData(Request $request){
-        return $this->createSuccessMessage(User::current_user_data());
+    	if (Auth::check()){
+	        return $this->createSuccessMessage(User::current_user_data());
+	    }
+	    else{
+	    	return $this->createErrorMessage('You need to log in first.', 400);
+	    }
     }
 
     public function readNotification(Request $request){

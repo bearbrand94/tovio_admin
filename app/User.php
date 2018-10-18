@@ -9,7 +9,7 @@ use Searchy;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use App\PostTemplate;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -44,7 +44,7 @@ class User extends Authenticatable
                 array_push($data['unread_notifications'], $notification);
             }
         }
-        $data['template_url'] = "";
+        $data['template_url']=PostTemplate::get_post_template();
         return $data;
     }
 
