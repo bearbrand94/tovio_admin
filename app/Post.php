@@ -94,7 +94,7 @@ class Post extends Model
         return $result;
     }
 
-    public static function get_post($date_start = null, $date_end = null, $page_show = 10){
+    public static function get_post($date_start = null, $date_end = null, $page_show = 10, $order_by = "asc"){
         $post = Post::select_post();
         if($date_start){
             $date_start = Date('Y-m-d h:i:s',strtotime($date_start));
@@ -105,9 +105,9 @@ class Post extends Model
             $post = $post->where('schedule_date', '<', $date_end);
         }
 
-        $post = $post->orderBy('schedule_date', 'asc');
+        $post = $post->orderBy('schedule_date', $order_by);
         $post = $post->paginate($page_show);
-        $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
+        $post->appends(['date_start' => $date_start, 'date_end' => $date_end, 'page_show' => $page_show, 'order_by' => $order_by])->links();
 
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]->comment_count = Comment::where('post_id', $post[$i]->id)->count();
@@ -117,7 +117,7 @@ class Post extends Model
         return $post;
     }
 
-    public static function get_user_post($date_start = null, $date_end = null, $page_show = 10, $user_id){
+    public static function get_user_post($date_start = null, $date_end = null, $page_show = 10, $user_id, $order_by = "asc"){
         $post = Post::select_post();
         $post = $post->where('posts.posted_by', $user_id);
         if($date_start && $date_end){
@@ -128,7 +128,7 @@ class Post extends Model
         }
         $post = $post->orderBy('schedule_date', 'desc');
         $post = $post->paginate($page_show);
-        $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
+        $post->appends(['date_start' => $date_start, 'date_end' => $date_end, 'page_show' => $page_show, 'order_by' => $order_by])->links();
 
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]->comment_count = Comment::where('post_id', $post[$i]->id)->count();
@@ -138,7 +138,7 @@ class Post extends Model
         return $post;
     }
 
-    public static function get_network_post($date_start = null, $date_end = null, $page_show = 10){
+    public static function get_network_post($date_start = null, $date_end = null, $page_show = 10, $order_by = "asc"){
         $post = Post::select_post();
         $post = $post->join('networks', 'networks.following_id', '=', 'posts.posted_by')
                     ->where('networks.follower_id', '=',  Auth::id());
@@ -151,7 +151,7 @@ class Post extends Model
         }
         $post = $post->orderBy('schedule_date', 'desc');
         $post = $post->paginate($page_show);
-        $post->appends(['date_start' => $date_start, 'date_end' => $date_end])->links();
+        $post->appends(['date_start' => $date_start, 'date_end' => $date_end, 'page_show' => $page_show, 'order_by' => $order_by])->links();
 
         for ($i=0; $i < count($post); $i++) { 
             $post[$i]->comment_count = Comment::where('post_id', $post[$i]->id)->count();

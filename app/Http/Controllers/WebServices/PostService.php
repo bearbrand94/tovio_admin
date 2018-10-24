@@ -47,21 +47,21 @@ class PostService extends WebService
     public function get_post(Request $request){
         $request = $this->process_request_data($request);
 
-        $post = Post::get_post($request->date_start, $request->date_end, $request->page_show);
+        $post = Post::get_post($request->date_start, $request->date_end, $request->page_show, $request->order_by);
         return $this->createSuccessMessage($post);
     }
 
     public function get_network_post(Request $request){
         $request = $this->process_request_data($request);
 
-        $post = Post::get_network_post($request->date_start, $request->date_end, $request->page_show);
+        $post = Post::get_network_post($request->date_start, $request->date_end, $request->page_show, $request->order_by);
         return $this->createSuccessMessage($post);
     }
 
     public function get_my_post(Request $request){
         $request = $this->process_request_data($request);
 
-        $post = Post::get_user_post($request->date_start, $request->date_end, $request->page_show, Auth::id());
+        $post = Post::get_user_post($request->date_start, $request->date_end, $request->page_show, Auth::id(), $request->order_by  );
         return $this->createSuccessMessage($post);
     }
 
