@@ -27,10 +27,10 @@ class UserService extends WebService
 	}
 
     public function signIn(Request $request) {
-		return $this->mobileSignIn($request->username, $request->password);
+		return $this->mobileSignIn($request->username, $request->password, $request->token);
 	}
 
-	public function mobileSignIn($username, $password) {
+	public function mobileSignIn($username, $password, $token=null) {
 		// check if user is exist, and password is alright
         $user_exist = $username?true:false;
         $password_correct = $password?true:false;

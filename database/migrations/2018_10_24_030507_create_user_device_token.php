@@ -16,7 +16,7 @@ class CreateUserDeviceToken extends Migration
         Schema::create('user_device_token', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->string('token_value');
+            $table->string('token_value')->nullable();
             $table->timestamps();
         });
     }
