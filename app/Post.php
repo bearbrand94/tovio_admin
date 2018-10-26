@@ -36,6 +36,11 @@ class Post extends Model
         return $post;
     }
 
+    public static function get_user_archievement($user_id){
+        $post = Post::select_post();
+        $post = $post->where('posted_by', $user_id)->where('is_completed', 1);
+    }
+
     public static function get_post_invitation(){
         $post = DB::table('posts')
                 ->join('users', 'users.id', '=', 'posts.posted_by')
@@ -60,7 +65,7 @@ class Post extends Model
     public static function search_tag($keyword, $paginate=10, $page=1){
         $post_data = DB::table('posts')
                     ->join('users', 'users.id', '=', 'posts.posted_by')
-                    ->select(DB::raw("'posts' as table_name"), 'posts.id as reference_id', 'posts.content', 'posts.posted_by as user_id', 'users.first_name as posted_by_name', 'users.username', 'posts.created_at')
+                    ->select(DB::raw("'posts' as table_name"), 'posts.id as reference_id', 'posts.content', 'posts.posted_by as user_id', 'posts.schedule_date', 'users.first_name as posted_by_name', 'users.username', 'posts.created_at')
                     ->where('content', 'like', '%#' . $keyword . '%');
 
         $comment_data = DB::table('comments')

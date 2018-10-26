@@ -17,7 +17,7 @@ class CreateNetworksTable extends Migration
             $table->increments('id');
             $table->integer('follower_id');
             $table->integer('following_id');
-
+            $table->integer('status')->default(0);
             $table->unique(['follower_id', 'following_id']);
             $table->timestamps();
         });

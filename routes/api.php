@@ -91,6 +91,7 @@ Route::post('/search', function (Request $request) {
 // Route::get('post', 'WebServices\PostService@index');
 Route::get('post/get', 'WebServices\PostService@get_post');
 Route::get('post/network_post', 'WebServices\PostService@get_network_post');
+Route::get('post/archievement', 'WebServices\PostService@get_user_archievement');
 Route::get('post/my_post', 'WebServices\PostService@get_my_post');
 Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');

@@ -34,6 +34,10 @@ class User extends Authenticatable
 
     protected $table = "users";
 
+    public static function add_device_token(){
+
+    }
+
     public static function current_user_data(){
         $data = [];
         $user = Auth::user();
@@ -134,7 +138,7 @@ class User extends Authenticatable
 
     public static function get_network($user_id){
         $results = DB::select( DB::raw("
-            SELECT follower_id
+            SELECT id, follower_id, status
             FROM networks
             WHERE following_id = :user_id1 AND follower_id IN(
                 SELECT following_id

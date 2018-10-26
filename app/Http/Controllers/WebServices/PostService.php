@@ -58,6 +58,13 @@ class PostService extends WebService
         return $this->createSuccessMessage($post);
     }
 
+    public function get_user_archievement(Request $request){
+        $request = $this->process_request_data($request);
+
+        $post = Post::get_user_archievement($request->date_start, $request->date_end, $request->page_show, $request->order_by);
+        return $this->createSuccessMessage($post);
+    }
+    
     public function get_my_post(Request $request){
         $request = $this->process_request_data($request);
 

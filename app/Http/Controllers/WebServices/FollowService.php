@@ -24,6 +24,22 @@ class FollowService extends WebService
         return $this->createSuccessMessage(Like::find($id));
     }
 
+    public function accept(Request $request)
+    {
+        $follow = Follow::findOrFail($request->id);
+        $follow->update($request->all());
+
+        return $this->createSuccessMessage($follow);
+    }
+
+    public function decline(Request $request)
+    {
+        $follow = Follow::findOrFail($request->id);
+        $follow->update($request->all());
+
+        return $this->createSuccessMessage($follow);
+    }
+
     public function store(Request $request)
     {
         $follow_data = [];
