@@ -91,15 +91,16 @@ Route::post('/search', function (Request $request) {
 // Route::get('post', 'WebServices\PostService@index');
 Route::get('post/get', 'WebServices\PostService@get_post');
 Route::get('post/network_post', 'WebServices\PostService@get_network_post');
-Route::get('post/archievement', 'WebServices\PostService@get_user_archievement');
+Route::get('user/archievement', 'WebServices\PostService@get_user_archievement');
 Route::get('post/my_post', 'WebServices\PostService@get_my_post');
 Route::post('post/add', 'WebServices\PostService@store');
 Route::post('post/edit', 'WebServices\PostService@update');
 Route::post('post/delete', 'WebServices\PostService@delete');
 
 // post invitation
-Route::post('post/invite', 'WebServices\PostService@invite');
-Route::post('post/invite/get', 'WebServices\PostService@get_post_invitation');
+Route::post('post/invite', 'WebServices\InvitationService@invite');
+Route::post('post/invitation/get', 'WebServices\InvitationService@get_post_invitation');
+Route::post('user/invitation/get', 'WebServices\InvitationService@get_user_invitation');
 
 //comment service
 Route::get('comment/get', 'WebServices\CommentService@get_comment');

@@ -15,10 +15,15 @@ class Post extends Model
         'created_at', 'updated_at',
     ];
 
-    private static function select_post(){
+    private static function get_select_post(){
         $post = DB::table('posts')
                 ->join('users', 'users.id', '=', 'posts.posted_by')
-                ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
+                ->select('posts.*', 'users.first_name as posted_by_name', 'users.username');
+        return $post;
+    }
+
+    private static function select_post(){
+        $post = Post::get_select_post()
                 
                 //WHERE ((post_type=0)
                 //Select posts if the post is public.
@@ -37,30 +42,12 @@ class Post extends Model
     }
 
     public static function get_user_archievement($user_id){
-        $post = Post::select_post();
-        $post = $post->where('posted_by', $user_id)->where('is_completed', 1);
-    }
-
-    public static function get_post_invitation(){
-        $post = DB::table('posts')
-                ->join('users', 'users.id', '=', 'posts.posted_by')
-                ->select('posts.*', 'users.first_name as posted_by_name', 'users.username')
-                
-                //WHERE ((post_type=0)
-                //Select posts if the post is public.
-
-                // OR (post_type=1 AND posted_by=Auth::id()))
-                //OR if the post is private, but the current logged-in user owns that post.
-
-                ->where(function ($query) {
-                    $query->where('posts.post_type', 0)
-                          ->orWhere(function($query) {
-                            $query->where('posts.post_type', 1)
-                                  ->where('posts.posted_by', Auth::id());
-                            });
-                });
+        $post = Post::get_select_post();
+        $post = $post->where('posted_by', $user_id)->where('is_completed', 1)->get();
         return $post;
     }
+
+
 
     public static function search_tag($keyword, $paginate=10, $page=1){
         $post_data = DB::table('posts')
