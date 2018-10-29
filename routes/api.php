@@ -133,7 +133,8 @@ Route::post('user/test','WebServices\UserService@testUser');
 Route::post('user/sign_up','WebServices\UserService@signUp');
 Route::post('user/sign_in','WebServices\UserService@signIn');
 Route::post('user/edit','WebServices\UserService@editUserProfile');
-Route::post('user/get_user_detail','WebServices\UserService@getUserDetail');
+Route::post('user/get_user_detail','WebServices\UserService@get_user_detail');
+Route::post('username/search','WebServices\UserService@search_username');
 Route::post('user/sign_out','WebServices\UserService@signOut');
 
 // Notification things

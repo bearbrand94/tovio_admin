@@ -236,6 +236,14 @@ class UserService extends WebService
 	    }
     }
 
+    public function search_username(Request $request){
+    	return $this->createSuccessMessage(User::search_username($request->username));
+    }
+
+    public function get_user_detail(Request $request){
+    	return $this->createSuccessMessage(User::getUserDetail($request->user_id));
+    }
+
     public function readNotification(Request $request){
     	$user = Auth::user();
 		foreach ($user->unreadNotifications as $notification) {

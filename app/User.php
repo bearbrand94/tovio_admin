@@ -98,6 +98,18 @@ class User extends Authenticatable
         return $user;
     }
 
+    public static function search_username($username){
+        $user_data = User::select_user();
+        $user_data = $user_data->where('users.username', $username)
+            ->get();
+        for ($i=0; $i < count($user_data); $i++) { 
+            $user_data[$i]->network = User::get_network($user_data[$i]->id);
+            $user_data[$i]->network_count = count($user_data[$i]->network);
+            $user_data[$i]->follow_data = User::getFollowData($user_data[$i]->id);
+        }
+        return $user_data[0];
+    }
+
     public static function getUserDetail($user_id){
         $user_data = User::select_user();
         $user_data = $user_data->where('users.id', $user_id)
