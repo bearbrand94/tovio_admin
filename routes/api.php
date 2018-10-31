@@ -101,6 +101,8 @@ Route::post('post/delete', 'WebServices\PostService@delete');
 Route::post('post/invite', 'WebServices\InvitationService@invite');
 Route::post('post/invitation/get', 'WebServices\InvitationService@get_post_invitation');
 Route::post('user/invitation/get', 'WebServices\InvitationService@get_user_invitation');
+Route::post('post/invitation/accept', 'WebServices\InvitationService@accept_invitation');
+Route::post('post/invitation/reject', 'WebServices\InvitationService@reject_invitation');
 
 //comment service
 Route::get('comment/get', 'WebServices\CommentService@get_comment');

@@ -138,9 +138,16 @@ class InvitationService extends WebService
                 return $result = $this->createErrorMessage($value, 400);
             }
         }
-        $post_invitation = Post::find($request->invitation_id);
-        $post_invitation->invitation_answer = 1;
-        $post_invitation->update();
+
+        $post_invitation = PostInvitation::find($request->invitation_id);
+        if($post_invitation->user_id == Auth::id()){
+            $post_invitation->invitation_answer = 1;
+            $post_invitation->update();            
+        }
+        else{
+            return $this->createSuccessMessage("You are not allowed to do that.");
+        }
+
         
         $new_post_data = PostInvitation::get_post_invitation($invitation_id);
         return $this->createSuccessMessage($post_invitation);
@@ -163,11 +170,16 @@ class InvitationService extends WebService
                 return $result = $this->createErrorMessage($value, 400);
             }
         }
-        $post_invitation = Post::find($invitation_id);
-        $post_invitation->invitation_answer = 0;
-        $post_invitation->update();
+        $post_invitation = PostInvitation::find($invitation_id);
+        if($post_invitation->user_id == Auth::id()){
+            $post_invitation->invitation_answer = 2;
+            $post_invitation->update();            
+        }
+        else{
+            return $this->createSuccessMessage("You are not allowed to do that.");
+        }
         
-        $new_post_data = PostInvitation::get_post_invitation($post->id);
+        $new_post_data = PostInvitation::get_post_invitation($post_invitation->id);
         return $this->createSuccessMessage($post_invitation);
     }
 
