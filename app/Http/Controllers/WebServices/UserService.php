@@ -43,6 +43,7 @@ class UserService extends WebService
         	$data = [];
     
         	if (Auth::user()) {
+        		User::add_device_token($token);
 	        	$data = User::current_user_data();
             }
     

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\PostTemplate;
+use App\UserDeviceToken;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -34,8 +36,14 @@ class User extends Authenticatable
 
     protected $table = "users";
 
-    public static function add_device_token(){
-
+    public static function add_device_token($token, $user_id=null){
+        if ($user_id == null){
+            $user_id = Auth::id();
+        }
+        $new_token = new UserDeviceToken();
+        $new_token->user_id = $user_id;
+        $new_token->token_value = $token;
+        $new_token->save();
     }
 
     public static function current_user_data(){
@@ -49,6 +57,7 @@ class User extends Authenticatable
             }
         }
         $data['template_url']=PostTemplate::get_post_template();
+        $data['my_token_list']=DB::table('user_device_token')->where('user_id', Auth::id())->get();
         return $data;
     }
 
